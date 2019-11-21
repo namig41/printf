@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ft_printf.a
+NAME = libftprintf.a
 
 SRC_DIR = ./src/
 INC_DIR = ./includes/
@@ -34,7 +34,7 @@ obj:
 	$(CC) $(CFLAGS) -c $(SRCS)
 
 clean:
-	rm -rf $(OBJS)
+	rm -f $(OBJS)
 
 fclean: clean
 	rm -f $(NAME)
