@@ -1,9 +1,11 @@
 #include "printf.h"
+#include <printf.h>
 
 
 
 int main(void)
 {
-    ft_printf("%d%f", 3, 1.333330000);
+    ft_printf("%zfgfdgdfgfdgdf\n");
+    printf("%zfgfdgdfgfdgdf");
     return (0);
 }

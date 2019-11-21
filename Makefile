@@ -10,37 +10,30 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ft_printf 
+NAME = ft_printf.a
 
 SRC_DIR = ./src/
 INC_DIR = ./includes/
 LIB_DIR = ./libft/
 
-SRC_NAME = main \
-			parse \
-
-LIB_NAME = libft
+SRC_NAME = ft_printf \
 
 SRCS = $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_NAME)))
 OBJS = $(addsuffix .o, $(SRC_NAME))
-LIBS = $(addprefix $(LIB_DIR), $(addsuffix .a, $(LIB_NAME)))
 
 CC = gcc
-CFLAGS = -I$(INC_DIR) -I$(LIB_DIR)
+CFLAGS = -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIB_DIR)
 
 all: $(NAME)
+
+$(NAME): obj
+	ar rc $(NAME) $(OBJS)
+	ranlib $(NAME)
 
 obj:
 	$(CC) $(CFLAGS) -c $(SRCS)
 
-$(NAME): lib obj
-	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
-
-lib:
-	make -C $(LIB_DIR)
-
 clean:
-	make fclean -C $(LIB_DIR)
 	rm -rf $(OBJS)
 
 fclean: clean
