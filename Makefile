@@ -18,23 +18,105 @@ LIB_DIR = ./libft/
 
 SRC_NAME = ft_printf \
 
-SRCS = $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_NAME)))
-OBJS = $(addsuffix .o, $(SRC_NAME))
+FUNCS_1 = ft_memset \
+		ft_bzero \
+		ft_memcpy \
+		ft_memccpy \
+		ft_memmove \
+		ft_memcmp \
+		ft_memchr \
+		ft_strlen \
+		ft_strdup \
+		ft_strcpy \
+		ft_strncpy \
+		ft_strcat \
+		ft_strncat \
+		ft_strlcat \
+		ft_strchr \
+		ft_strrchr \
+		ft_strstr \
+		ft_strnstr \
+		ft_strcmp \
+		ft_strncmp \
+		ft_atoi \
+		ft_isalpha \
+		ft_isdigit \
+		ft_isalnum \
+		ft_isascii \
+		ft_isprint \
+		ft_toupper \
+		ft_tolower
+
+
+FUNCS_2 = \
+        ft_memalloc \
+		ft_memdel \
+		ft_strnew \
+		ft_strdel \
+		ft_striter \
+		ft_striteri \
+		ft_strmap \
+		ft_strmapi \
+		ft_strequ \
+		ft_strnequ \
+		ft_strsub \
+		ft_strjoin \
+		ft_strtrim \
+		ft_strsplit \
+		ft_itoa \
+		ft_putchar \
+		ft_putnbr \
+		ft_putstr \
+		ft_putendl \
+		ft_putchar_fd \
+		ft_putnbr_fd \
+		ft_putstr_fd \
+		ft_putendl_fd \
+		ft_strclr
+FUNCS_3	= \
+        ft_lstnew \
+        ft_lstdelone \
+        ft_lstdel \
+        ft_lstiter \
+        ft_lstmap \
+        ft_lstadd
+MY_FUNCS = \
+		ft_max \
+		ft_min \
+		ft_random \
+		ft_strsave \
+		ft_sqrt \
+		ft_lltoa \
+		ft_uitoa_base \
+
+ALL_FUNCS = $(FUNCS_1) $(FUNCS_2) $(FUNCS_3) $(MY_FUNCS)
+
+SRCSLIB = $(addprefix $(LIB_DIR), $(addsuffix .c, $(ALL_FUNCS)))
+
+SRCSPRINTF = $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_NAME)))
+
+OBJLIB = $(addsuffix .o, $(ALL_FUNCS))
+
+OBJPRINTF = $(addsuffix .o, $(SRC_NAME))
+
+ALLOBJS = $(OBJLIB)  $(OBJPRINTF)
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIB_DIR)
 
 all: $(NAME)
 
-$(NAME): obj
-	ar rc $(NAME) $(OBJS)
-	ranlib $(NAME)
+$(ALLOBJS):
+	$(CC) $(CFLAGS) -c $(SRCSLIB) $(SRCSPRINTF) 
 
-obj:
-	$(CC) $(CFLAGS) -c $(SRCS)
+$(NAME): $(ALLOBJS)
+	ar rc $(NAME) $?
+	ranlib $(NAME)
+	rm -f $(ALLOBJS)
+	gcc ./src/main.c libftprintf.a -I $(LIB_DIR) -I $(INC_DIR)
 
 clean:
-	rm -f $(OBJS)
+	rm -f $(ALLOBJS)
 
 fclean: clean
 	rm -f $(NAME)
