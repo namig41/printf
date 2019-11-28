@@ -71,11 +71,11 @@ static int  print_str(char c, va_list arg)
     return (1);
 }
 
-static char parse_flags_ap(const char *format, va_list arg)
+static char parse_flags_ap(va_list arg)
 {
-    while (*format && !belongs_set(*format, SPECIFIIER))
+    while (*g_format && !belongs_set(*g_format, SPECIFIIER))
     {
-        if (*format == 'l')
+        if (*g_format == 'l')
         {
             if (flags.l)
             {
@@ -85,7 +85,7 @@ static char parse_flags_ap(const char *format, va_list arg)
             else
                 flags.l = 1;
         }
-        else if (*format == 'h')
+        else if (*g_format == 'h')
         {
             if (flags.h)
             {
@@ -95,36 +95,36 @@ static char parse_flags_ap(const char *format, va_list arg)
             else
                 flags.h = 1;
         }
-        else if (*format == '*' && ft_isdigit(*format))
-            if ((flags.accuracy = ft_atoi(format)) == 0)
+        else if (*g_format == '*' || ft_isdigit(*g_format))
+            if ((flags.accuracy = ft_atoi(g_format)) == 0)
                 flags.accuracy = va_arg(arg, int);
-        format++;
+        g_format++;
     }
-    return (*format);
+    return (*g_format);
 }
 
-static char parse_flags(const char *format, va_list arg)
+static char parse_flags(va_list arg)
 {
-    while (*format && !belongs_set(*format, SPECIFIIER))
+    while (*g_format && !belongs_set(*g_format, SPECIFIIER))
     {
-        if (*format == '0')
+        if (*g_format == '0')
             flags.zero = 1;
-        else if (*format == '+')
+        else if (*g_format == '+')
             flags.plus = 1;
-        else if (*format == '-')
+        else if (*g_format == '-')
             flags.minus = 1;
-        else if (*format == '#')
+        else if (*g_format == '#')
             flags.oct = 1;
-        else if (*format == '*' && ft_isdigit(*format))
+        else if (*g_format == '*' || ft_isdigit(*g_format))
         {
-            if ((flags.width = ft_atoi(format)) == 0)
+            if ((flags.width = ft_atoi(g_format)) == 0)
                 flags.width = va_arg(arg, int);
         }
-        else if (*format == '.')
-            return parse_flags_ap(format, arg);
-        format++;
+        else if (*g_format == '.')
+            return parse_flags_ap(arg);
+        g_format++;
     }
-    return (*format);
+    return (*g_format);
 }
 
 static void reset_flags(void)
@@ -157,11 +157,12 @@ static void processing_flags_int(void)
 
 }
 
-void     parse_arg(const char *format, va_list arg)
+void     parse_arg(va_list arg)
 {
     char c;
 
-    c = parse_flags(format, arg);
+    c = parse_flags(arg);
+    ft_putnbr(flags.width);
     if (belongs_set(c, SPECIFIIER_INT))
     {
         processing_flags_int();
@@ -177,30 +178,47 @@ void     parse_arg(const char *format, va_list arg)
         processing_flags_str();
         print_str(c, arg);
     }
+    else 
+        return ;
 }
 
-int     parse_format(const char *format, va_list arg)
+static int search_specifier(void)
+{
+    int i;
+
+    i = 0;
+    while (g_format[i] && g_format[i] != '%')
+    {
+        if (belongs_set(g_format[i], SPECIFIIER))
+            return (1);
+        i++;
+    }
+    return (0);
+}
+
+int     parse_format(va_list arg)
 {
     char *pf;
 
-    while (*format)
+    while (*g_format)
     {
-        if (*format == '%')
+        if (*g_format == '%')
         {
-            format++;
+            g_format++;
             reset_flags();
-            if (belongs_set(*format, SPECIFIIER))
-                parse_arg(format++, arg);
+            if (search_specifier())
+                parse_arg(arg);
             else
                 ft_putchar('%');
         }
         else
         {
-            pf = (char *)format;
-            while (*format && *format != '%')
-                format++;
-            write(1, pf, format - pf);
+            pf = (char *)g_format;
+            while (*g_format && *g_format != '%')
+                g_format++;
+            write(1, pf, g_format - pf);
         }
+        g_format++;
     }
     return (1);
 }
@@ -209,9 +227,10 @@ int     ft_printf(const char *format, ...)
 {
     va_list arg;
     int done;
+    g_format = format;
 
     va_start(arg, format);
-    done = parse_format(format, arg);
+    done = parse_format(arg);
     va_end(arg);
     return (done);
 }

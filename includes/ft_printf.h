@@ -20,7 +20,6 @@
 # define SPECIFIIER_FLOAT "f"
 # define SPECIFIIER_STR "csp"
 
-
 typedef struct s_flags
 {
 	int			zero;
@@ -37,9 +36,10 @@ typedef struct s_flags
 }				t_flags;
 
 int     ft_printf(const char *format, ...);
-int     parse_format(const char *format, va_list arg);
-void    parse_arg(const char *format, va_list arg);
+int     parse_format(va_list arg);
+void    parse_arg(va_list arg);
 
 t_flags flags;
-int		count;
+const char *g_format;
+int	count;
 #endif

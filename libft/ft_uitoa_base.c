@@ -34,7 +34,7 @@ char	*ft_uitoa_base(t_ull value, int base, char reg)
 	str[size] = '\0';
 	while (--size >= 0)
 	{
-		str[size] = tab[FT_ABS(value % base)];
+		str[size] = tab[value % base];
 		value /= base;
 	}
 	return (str);
