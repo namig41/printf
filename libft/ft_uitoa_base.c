@@ -6,13 +6,13 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:04:06 by lcarmelo          #+#    #+#             */
-/*   Updated: 2019/11/21 17:04:20 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2019/11/29 22:01:01 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_uitoa_base(t_ull value, int base, char reg)
+char	*ft_uitoa_base(t_ui value, int base, char reg)
 {
 	char				*str;
 	int					size;
