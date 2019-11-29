@@ -3,8 +3,8 @@
 
 int main(void)
 {
-    ft_printf("%30d\n", 4);
-    printf("%30d\n", 4);
+
+    ft_printf("%0d", 10, -13.f, 4, 10);
 
     return (0);
 }

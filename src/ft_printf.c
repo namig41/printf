@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>
 
 static int  print_int(char c, va_list arg)
 {
@@ -45,11 +46,11 @@ static void  print_float(double real)
     int byte;
 
     byte = -1;
-    if (!flags.accuracy)
-        flags.accuracy = 6;
+    if (!g_flags.accuracy)
+        g_flags.accuracy = 6;
     ft_putnbr((t_ui)real);
     ft_putchar('.');
-    while (++byte < flags.accuracy)
+    while (++byte < g_flags.accuracy)
     {
         real *= 10;
         ft_putnbr((int)real % 10);
@@ -77,27 +78,27 @@ static char parse_flags_ap(va_list arg)
     {
         if (*g_format == 'l')
         {
-            if (flags.l)
+            if (g_flags.l)
             {
-                flags.l = 0;
-                flags.ll = 1;
+                g_flags.l = 0;
+                g_flags.ll = 1;
             }
             else
-                flags.l = 1;
+                g_flags.l = 1;
         }
         else if (*g_format == 'h')
         {
-            if (flags.h)
+            if (g_flags.h)
             {
-                flags.h = 0;
-                flags.hh = 1;
+                g_flags.h = 0;
+                g_flags.hh = 1;
             }
             else
-                flags.h = 1;
+                g_flags.h = 1;
         }
         else if (*g_format == '*' || ft_isdigit(*g_format))
-            if ((flags.accuracy = ft_atoi(g_format)) == 0)
-                flags.accuracy = va_arg(arg, int);
+            if ((g_flags.accuracy = ft_atoi(g_format)) == 0)
+                g_flags.accuracy = va_arg(arg, int);
         g_format++;
     }
     return (*g_format);
@@ -108,17 +109,17 @@ static char parse_flags(va_list arg)
     while (*g_format && !belongs_set(*g_format, SPECIFIIER))
     {
         if (*g_format == '0')
-            flags.zero = 1;
+            g_flags.zero = 1;
         else if (*g_format == '+')
-            flags.plus = 1;
+            g_flags.plus = 1;
         else if (*g_format == '-')
-            flags.minus = 1;
+            g_flags.minus = 1;
         else if (*g_format == '#')
-            flags.oct = 1;
+            g_flags.oct = 1;
         else if (*g_format == '*' || ft_isdigit(*g_format))
         {
-            if ((flags.width = ft_atoi(g_format)) == 0)
-                flags.width = va_arg(arg, int);
+            if ((g_flags.width = ft_atoi(g_format)) == 0)
+                g_flags.width = va_arg(arg, int);
         }
         else if (*g_format == '.')
             return parse_flags_ap(arg);
@@ -129,53 +130,49 @@ static char parse_flags(va_list arg)
 
 static void reset_flags(void)
 {
-    flags.zero = 0;
-    flags.plus = 0;
-    flags.minus = 0;
-    flags.oct = 0;
-    flags.l = 0;
-    flags.ll = 0;
-    flags.h = 0;
-    flags.hh = 0;
-    flags.L = 0;
-    flags.width = 0;
-    flags.accuracy = 0;
+    g_flags.zero = 0;
+    g_flags.plus = 0;
+    g_flags.minus = 0;
+    g_flags.oct = 0;
+    g_flags.l = 0;
+    g_flags.ll = 0;
+    g_flags.h = 0;
+    g_flags.hh = 0;
+    g_flags.L = 0;
+    g_flags.width = 0;
+    g_flags.accuracy = 0;
 }
 
-static void processing_flags_str(void)
-{
-
-}
-
-static void processing_flags_float(void)
-{
-
-}
-
-static void processing_flags_int(void)
-{
-
-}
+// static void print_flags()
+// {
+//     // printf("zero = %d\n", g_flags.zero);
+//     // printf("plus = %d\n", g_flags.plus);
+//     // printf("minus = %d\n", g_flags.minus);
+//     // printf("oct = %d\n", g_flags.oct);
+//     // printf("l = %d\n", g_flags.l);
+//     // printf("ll = %d\n", g_flags.ll);
+//     // printf("h = %d\n", g_flags.h);
+//     // printf("hh = %d\n", g_flags.hh);
+//     // printf("L = %d\n", g_flags.L);
+//     // printf("width = %d\n", g_flags.width);
+//     // printf("accuracy = %d\n", g_flags.accuracy);
+// }
 
 void     parse_arg(va_list arg)
 {
     char c;
 
     c = parse_flags(arg);
-    ft_putnbr(flags.width);
     if (belongs_set(c, SPECIFIIER_INT))
     {
-        processing_flags_int();
         print_int(c, arg);
     }
     else if (belongs_set(c, SPECIFIIER_FLOAT))
     {
-        processing_flags_float();
         print_float(va_arg(arg, double));    
     }
     else if (belongs_set(c, SPECIFIIER_STR))
     {
-        processing_flags_str();
         print_str(c, arg);
     }
     else 
@@ -217,6 +214,7 @@ int     parse_format(va_list arg)
             while (*g_format && *g_format != '%')
                 g_format++;
             write(1, pf, g_format - pf);
+            g_format--;
         }
         g_format++;
     }
@@ -226,9 +224,9 @@ int     parse_format(va_list arg)
 int     ft_printf(const char *format, ...)
 {
     va_list arg;
-    int done;
+    int		done;
+	
     g_format = format;
-
     va_start(arg, format);
     done = parse_format(arg);
     va_end(arg);
