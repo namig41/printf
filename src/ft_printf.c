@@ -163,6 +163,7 @@ void     parse_arg(va_list arg)
     char c;
 
     c = parse_flags(arg);
+	printf("width = %d\n", g_flags.width);
     if (belongs_set(c, SPECIFIIER_INT))
     {
         print_int(c, arg);
@@ -225,7 +226,7 @@ int     ft_printf(const char *format, ...)
 {
     va_list arg;
     int		done;
-	
+
     g_format = format;
     va_start(arg, format);
     done = parse_format(arg);
