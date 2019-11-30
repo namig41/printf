@@ -6,7 +6,7 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2019/11/21 13:49:24 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2019/11/29 22:30:41 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 
 static int  print_int(char c, va_list arg)
 {
+	while (g_flags.width != 0)
+	{
+		ft_putchar(' ');
+		g_flags.width--;
+	}
     if (c == 'd' || c == 'i')
         ft_putnbr(va_arg(arg, int));
     else if (c == 'u')
@@ -28,6 +33,11 @@ static int  print_int(char c, va_list arg)
     else
         return (0);
     return (1);
+}
+
+static void	print_whitespaces()
+{
+
 }
 
 static int  belongs_set(char c, char *s)
@@ -145,17 +155,17 @@ static void reset_flags(void)
 
 // static void print_flags()
 // {
-//     // printf("zero = %d\n", g_flags.zero);
-//     // printf("plus = %d\n", g_flags.plus);
-//     // printf("minus = %d\n", g_flags.minus);
-//     // printf("oct = %d\n", g_flags.oct);
-//     // printf("l = %d\n", g_flags.l);
-//     // printf("ll = %d\n", g_flags.ll);
-//     // printf("h = %d\n", g_flags.h);
-//     // printf("hh = %d\n", g_flags.hh);
-//     // printf("L = %d\n", g_flags.L);
-//     // printf("width = %d\n", g_flags.width);
-//     // printf("accuracy = %d\n", g_flags.accuracy);
+//      printf("zero = %d\n", g_flags.zero);
+//      printf("plus = %d\n", g_flags.plus);
+//      printf("minus = %d\n", g_flags.minus);
+//      printf("oct = %d\n", g_flags.oct);
+//      printf("l = %d\n", g_flags.l);
+//      printf("ll = %d\n", g_flags.ll);
+//      printf("h = %d\n", g_flags.h);
+//      printf("hh = %d\n", g_flags.hh);
+//      printf("L = %d\n", g_flags.L);
+//      printf("width = %d\n", g_flags.width);
+//      printf("accuracy = %d\n", g_flags.accuracy);
 // }
 
 void     parse_arg(va_list arg)
@@ -193,6 +203,32 @@ static int search_specifier(void)
     return (0);
 }
 
+//static int parse_without_spec(void)
+//{
+//	int i;
+//	int space_count;
+//
+//	i = 0;
+//	space_count = 0;
+//
+//	while (ft_isdigit(g_format[i]))
+//	{
+//		space_count = space_count * 10 + (g_format[i] - '0');
+//		i++;
+//	}
+//	while (space_count != 0) {
+//		ft_putchar(' ');
+//		space_count--;
+//	}
+//	while (g_format[i] && g_format[i] != '%')
+//	{
+//		if (belongs_set(g_format[i], SPECIFIIER))
+//			return (1);
+//		i++;
+//	}
+//	return (0);
+//}
+
 int     parse_format(va_list arg)
 {
     char *pf;
@@ -204,9 +240,9 @@ int     parse_format(va_list arg)
             g_format++;
             reset_flags();
             if (search_specifier())
-                parse_arg(arg);
+				parse_arg(arg);
             else
-                ft_putchar('%');
+				ft_putchar('%');
         }
         else
         {
