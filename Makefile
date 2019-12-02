@@ -88,6 +88,7 @@ MY_FUNCS = \
 		ft_sqrt \
 		ft_lltoa \
 		ft_uitoa_base \
+		ft_ulltoa_base \
 
 ALL_FUNCS = $(FUNCS_1) $(FUNCS_2) $(FUNCS_3) $(MY_FUNCS)
 

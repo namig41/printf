@@ -3,9 +3,7 @@
 
 int main(void)
 {
-
-    ft_printf("%10d", 5, -13.f, 4, 10);
-
-    printf("%.10d", 5);
+    //ft_printf("%#lx", 4294967296);
+    ft_printf("%#x", 0);
     return (0);
 }

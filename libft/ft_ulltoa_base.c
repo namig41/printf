@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-char	*ft_uitoa_base(t_ui value, int base, char reg)
+char	*ft_ulltoa_base(t_ull value, int base, char reg)
 {
 	char				*str;
 	int					size;

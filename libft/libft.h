@@ -6,7 +6,7 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 20:36:34 by lcarmelo          #+#    #+#             */
-/*   Updated: 2019/09/24 12:02:36 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2019/11/29 22:01:01 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <string.h>
-# define FT_ABS(num) num < 0 ? -num : num
 
 typedef struct				s_list
 {
@@ -28,6 +27,8 @@ typedef unsigned char		t_uc;
 typedef const unsigned char	t_cuc;
 typedef unsigned long long	t_ull;
 typedef long long			t_ll;
+typedef long				t_l;
+typedef unsigned long		t_ul;
 typedef unsigned int		t_ui;
 typedef unsigned short int	t_usi;
 
@@ -88,7 +89,8 @@ char						*ft_strtrim(char const *s);
 char						**ft_strsplit(char const *s, char c);
 char						*ft_itoa(int n);
 char						*ft_lltoa(t_ll n);
-char						*ft_uitoa_base(t_ull value, int base, char reg);
+char						*ft_uitoa_base(t_ui value, int base, char reg);
+char						*ft_ulltoa_base(t_ull value, int base, char reg);
 int							ft_strequ(char const *s1, char const *s2);
 
 void						ft_putchar(char c);

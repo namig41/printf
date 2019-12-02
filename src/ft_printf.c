@@ -6,27 +6,140 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2019/11/21 13:49:24 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2019/11/29 22:30:41 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
+
+static void processing_width(char c, int w)
+{
+    int i;
+
+    i = -1;
+    while (++i < w)
+        ft_putchar(c);
+}
+
+static void processing_int(char c, char *s_int)
+{
+    int l;
+
+    l = ft_strlen(s_int);
+    if (g_flags.minus)
+    {
+        if (g_flags.plus)
+            ft_putchar('+');
+        if (g_flags.oct && s_int[0] != '0')
+        {
+            if (c == 'x')
+            {
+                ft_putstr("0x");
+                g_flags.oct = 2;
+            }
+            else if (c == 'X')
+            {
+                ft_putstr("0X");
+                g_flags.oct = 2;
+            }
+            else if (c == 'o')
+            {
+                ft_putchar('0');
+                g_flags.oct = 1;
+            }
+            else
+                g_flags.oct = 0;
+        }
+        else
+            g_flags.oct = 0;
+        ft_putstr(s_int);
+        processing_width(g_flags.zero ? '0' : ' ', g_flags.width - l - g_flags.plus - g_flags.oct);
+    }
+    else
+    {
+        if (g_flags.oct && s_int[0] != '0')
+        {
+            if (c == 'x')
+                g_flags.oct = 2;
+            else if (c == 'X')
+                g_flags.oct = 2;
+            else if (c == 'o')
+                g_flags.oct = 1;
+            else
+                g_flags.oct = 0;
+        }
+        else
+            g_flags.oct = 0;
+        processing_width(g_flags.zero ? '0' : ' ', g_flags.width - l - g_flags.plus - g_flags.oct);
+        if (g_flags.plus)
+            ft_putchar('+');
+        if (g_flags.oct)
+        {
+            if (c == 'x')
+                ft_putstr("0x");
+            else if (c == 'X')
+                ft_putstr("0X");
+            else if (c == 'o')
+                ft_putchar('0');
+        }
+        ft_putstr(s_int);
+    }
+    
+}
 
 static int  print_int(char c, va_list arg)
 {
+    char *s_int;
+
     if (c == 'd' || c == 'i')
-        ft_putnbr(va_arg(arg, int));
+    {
+        if (g_flags.ll)
+            s_int = ft_lltoa(va_arg(arg, t_ll));
+        else if (g_flags.l)
+            s_int = ft_lltoa(va_arg(arg, t_l));
+        else
+            s_int = ft_lltoa(va_arg(arg, int));
+    }
     else if (c == 'u')
-        ft_putstr(ft_lltoa(va_arg(arg, t_ui)));
+    {
+        if (g_flags.ll)
+            s_int = ft_lltoa(va_arg(arg, t_ull));
+        else if (g_flags.l)
+            s_int = ft_lltoa(va_arg(arg, t_ul));
+        else
+            s_int = ft_lltoa(va_arg(arg, t_ui));
+    }
     else if (c == 'o')
-       ft_putstr(ft_uitoa_base(va_arg(arg, int), 8, 'o'));
+    { 
+        if (g_flags.ll)
+            s_int = ft_ulltoa_base(va_arg(arg, t_ull), 8, 'o');
+        else if (g_flags.l)
+            s_int = ft_ulltoa_base(va_arg(arg, t_ul), 8, 'o');
+        else
+            s_int = ft_uitoa_base(va_arg(arg, int), 8, 'o');
+    }
     else if (c == 'x')
-        ft_putstr(ft_uitoa_base(va_arg(arg, int), 16, 'x'));
+    {
+        if (g_flags.ll)
+            s_int = ft_ulltoa_base(va_arg(arg, t_ull), 16, 'x');
+        else if (g_flags.l)
+            s_int = ft_ulltoa_base(va_arg(arg, t_ul), 16, 'x');
+        else
+            s_int = ft_uitoa_base(va_arg(arg, int), 16, 'x');
+    }
     else if (c == 'X')
-         ft_putstr(ft_uitoa_base(va_arg(arg, int), 16, 'X'));
+    {
+        if (g_flags.ll)
+            s_int = ft_ulltoa_base(va_arg(arg, t_ull), 16, 'X');
+        else if (g_flags.l)
+            s_int = ft_ulltoa_base(va_arg(arg, t_ul), 16, 'X');
+        else
+            s_int = ft_uitoa_base(va_arg(arg, int), 16, 'X');
+    }
     else
         return (0);
+    processing_int(c, s_int);
+    free(s_int);
     return (1);
 }
 
@@ -76,27 +189,7 @@ static char parse_flags_ap(va_list arg)
 {
     while (*g_format && !belongs_set(*g_format, SPECIFIIER))
     {
-        if (*g_format == 'l')
-        {
-            if (g_flags.l)
-            {
-                g_flags.l = 0;
-                g_flags.ll = 1;
-            }
-            else
-                g_flags.l = 1;
-        }
-        else if (*g_format == 'h')
-        {
-            if (g_flags.h)
-            {
-                g_flags.h = 0;
-                g_flags.hh = 1;
-            }
-            else
-                g_flags.h = 1;
-        }
-        else if (*g_format == '*' || ft_isdigit(*g_format))
+        if (*g_format == '*' || ft_isdigit(*g_format))
             if ((g_flags.accuracy = ft_atoi(g_format)) == 0)
                 g_flags.accuracy = va_arg(arg, int);
         g_format++;
@@ -120,6 +213,15 @@ static char parse_flags(va_list arg)
         {
             if ((g_flags.width = ft_atoi(g_format)) == 0)
                 g_flags.width = va_arg(arg, int);
+            g_format += ft_strlen(ft_lltoa(g_flags.width)) - 1;
+        }
+        else if (*g_format == 'l')
+        {
+            g_flags.l = ((g_flags.ll = g_flags.l)) ? 0 : 1;
+        }
+        else if (*g_format == 'h')
+        {
+            g_flags.h = ((g_flags.hh = g_flags.h)) ? 0 : 1;
         }
         else if (*g_format == '.')
             return parse_flags_ap(arg);
@@ -128,42 +230,11 @@ static char parse_flags(va_list arg)
     return (*g_format);
 }
 
-static void reset_flags(void)
-{
-    g_flags.zero = 0;
-    g_flags.plus = 0;
-    g_flags.minus = 0;
-    g_flags.oct = 0;
-    g_flags.l = 0;
-    g_flags.ll = 0;
-    g_flags.h = 0;
-    g_flags.hh = 0;
-    g_flags.L = 0;
-    g_flags.width = 0;
-    g_flags.accuracy = 0;
-}
-
-// static void print_flags()
-// {
-//     // printf("zero = %d\n", g_flags.zero);
-//     // printf("plus = %d\n", g_flags.plus);
-//     // printf("minus = %d\n", g_flags.minus);
-//     // printf("oct = %d\n", g_flags.oct);
-//     // printf("l = %d\n", g_flags.l);
-//     // printf("ll = %d\n", g_flags.ll);
-//     // printf("h = %d\n", g_flags.h);
-//     // printf("hh = %d\n", g_flags.hh);
-//     // printf("L = %d\n", g_flags.L);
-//     // printf("width = %d\n", g_flags.width);
-//     // printf("accuracy = %d\n", g_flags.accuracy);
-// }
-
 void     parse_arg(va_list arg)
 {
     char c;
 
     c = parse_flags(arg);
-	printf("width = %d\n", g_flags.width);
     if (belongs_set(c, SPECIFIIER_INT))
     {
         print_int(c, arg);
@@ -193,7 +264,6 @@ static int search_specifier(void)
     }
     return (0);
 }
-
 int     parse_format(va_list arg)
 {
     char *pf;
@@ -203,9 +273,9 @@ int     parse_format(va_list arg)
         if (*g_format == '%')
         {
             g_format++;
-            reset_flags();
+            ft_bzero(&g_flags, sizeof(g_flags));
             if (search_specifier())
-                parse_arg(arg);
+				parse_arg(arg);
             else
                 ft_putchar('%');
         }
