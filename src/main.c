@@ -3,6 +3,6 @@
 
 int main(void)
 {
-    printf("%-15x", 4);
+    printf("%+-d", 4);
     return (0);
 }

@@ -35,7 +35,7 @@ static void type_oct(char c)
     }
 }
 
-static void processing_oct(char c, char *s_int)
+static void print_int(char c, char *s_int)
 {
     if (g_flags.oct && s_int[0] != '0')
     {
@@ -51,22 +51,34 @@ static void processing_oct(char c, char *s_int)
     ft_putstr(s_int);
 }
 
-static void processing_int(char c, char *s_int)
+static int proccesing_sign(char c)
+{
+    if (c == '-')
+        ft_putchar('-');
+    else if (g_flags.plus)
+        ft_putchar('+');
+    else
+        return (0);
+    return (1);
+}
+
+static void proccesing_flag(char c, char *s_int)
 {
     type_oct(c);
     if (g_flags.minus)
     {
-        processing_oct(c, s_int);
+        print_int(c, s_int);
         processing_width(g_flags.zero ? '0' : ' ', g_flags.width - ft_strlen(s_int) - g_flags.plus - g_flags.oct);
     }
     else
     {
+        g_flags.plus = !proccesing_sign(s_int[0]);
         processing_width(g_flags.zero ? '0' : ' ', g_flags.width - ft_strlen(s_int) - g_flags.oct);
-        processing_oct(c, s_int);
-    } 
+        print_int(c, s_int + (s_int[0] == '-'));
+    }
 }
 
-static int  print_int(char c, va_list arg)
+static int  proccesing_int(char c, va_list arg)
 {
     char *s_int;
 
@@ -117,7 +129,7 @@ static int  print_int(char c, va_list arg)
     }
     else
         return (0);
-    processing_int(c, s_int);
+    proccesing_flag(c, s_int);
     free(s_int);
     return (1);
 }
@@ -195,13 +207,9 @@ static char parse_flags(va_list arg)
             g_format += ft_strlen(ft_lltoa(g_flags.width)) - 1;
         }
         else if (*g_format == 'l')
-        {
             g_flags.l = (g_flags.ll = g_flags.l) ? 0 : 1;
-        }
         else if (*g_format == 'h')
-        {
             g_flags.h = (g_flags.hh = g_flags.h) ? 0 : 1;
-        }
         else if (*g_format == '.')
             return parse_flags_ap(arg);
         g_format++;
@@ -216,7 +224,7 @@ void     parse_arg(va_list arg)
     c = parse_flags(arg);
     if (belongs_set(c, SPECIFIIER_INT))
     {
-        print_int(c, arg);
+        proccesing_int(c, arg);
     }
     else if (belongs_set(c, SPECIFIIER_FLOAT))
     {
