@@ -21,70 +21,49 @@ static void processing_width(char c, int w)
         ft_putchar(c);
 }
 
+static void type_oct(char c)
+{
+    if (g_flags.oct)
+    {
+        g_flags.oct = 0;
+        if (c == 'x')
+            g_flags.oct = 2;
+        else if (c == 'X')
+            g_flags.oct = 2;
+        else if (c == 'o')
+            g_flags.oct = 1;
+    }
+}
+
+static void processing_oct(char c, char *s_int)
+{
+    if (g_flags.oct && s_int[0] != '0')
+    {
+        if (c == 'x')
+            ft_putstr("0x");
+        else if (c == 'X')
+            ft_putstr("0X");
+        else if (c == 'o')
+            ft_putchar('0');
+    }
+    if (s_int[0] != '-' && g_flags.plus)
+        ft_putchar('+');
+    ft_putstr(s_int);
+}
+
 static void processing_int(char c, char *s_int)
 {
-    int l;
-
-    l = ft_strlen(s_int);
+    type_oct(c);
     if (g_flags.minus)
     {
-        if (g_flags.plus)
-            ft_putchar('+');
-        if (g_flags.oct && s_int[0] != '0')
-        {
-            if (c == 'x')
-            {
-                ft_putstr("0x");
-                g_flags.oct = 2;
-            }
-            else if (c == 'X')
-            {
-                ft_putstr("0X");
-                g_flags.oct = 2;
-            }
-            else if (c == 'o')
-            {
-                ft_putchar('0');
-                g_flags.oct = 1;
-            }
-            else
-                g_flags.oct = 0;
-        }
-        else
-            g_flags.oct = 0;
-        ft_putstr(s_int);
-        processing_width(g_flags.zero ? '0' : ' ', g_flags.width - l - g_flags.plus - g_flags.oct);
+        processing_oct(c, s_int);
+        processing_width(g_flags.zero ? '0' : ' ', g_flags.width - ft_strlen(s_int) - g_flags.plus - g_flags.oct);
     }
     else
     {
-        if (g_flags.oct && s_int[0] != '0')
-        {
-            if (c == 'x')
-                g_flags.oct = 2;
-            else if (c == 'X')
-                g_flags.oct = 2;
-            else if (c == 'o')
-                g_flags.oct = 1;
-            else
-                g_flags.oct = 0;
-        }
-        else
-            g_flags.oct = 0;
-        processing_width(g_flags.zero ? '0' : ' ', g_flags.width - l - g_flags.plus - g_flags.oct);
-        if (g_flags.plus)
-            ft_putchar('+');
-        if (g_flags.oct)
-        {
-            if (c == 'x')
-                ft_putstr("0x");
-            else if (c == 'X')
-                ft_putstr("0X");
-            else if (c == 'o')
-                ft_putchar('0');
-        }
-        ft_putstr(s_int);
-    }
-    
+        processing_width(g_flags.zero ? '0' : ' ', g_flags.width - ft_strlen(s_int) - g_flags.oct);
+        processing_oct(c, s_int);
+    } 
 }
 
 static int  print_int(char c, va_list arg)
@@ -217,11 +196,11 @@ static char parse_flags(va_list arg)
         }
         else if (*g_format == 'l')
         {
-            g_flags.l = ((g_flags.ll = g_flags.l)) ? 0 : 1;
+            g_flags.l = (g_flags.ll = g_flags.l) ? 0 : 1;
         }
         else if (*g_format == 'h')
         {
-            g_flags.h = ((g_flags.hh = g_flags.h)) ? 0 : 1;
+            g_flags.h = (g_flags.hh = g_flags.h) ? 0 : 1;
         }
         else if (*g_format == '.')
             return parse_flags_ap(arg);
@@ -247,8 +226,6 @@ void     parse_arg(va_list arg)
     {
         print_str(c, arg);
     }
-    else 
-        return ;
 }
 
 static int search_specifier(void)
@@ -264,6 +241,7 @@ static int search_specifier(void)
     }
     return (0);
 }
+
 int     parse_format(va_list arg)
 {
     char *pf;

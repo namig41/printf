@@ -29,7 +29,7 @@ typedef struct	s_flags
 	int			h;
 	int			hh;
 	int			l;
-	int			ll;
+	int			ll;	
 	int			L;
 	int			width;
 	int			accuracy;
