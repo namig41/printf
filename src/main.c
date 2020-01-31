@@ -3,6 +3,7 @@
 
 int main(void)
 {
-    printf("%+-d", 4);
+    ft_printf("\\");
+    printf("\\");
     return (0);
 }

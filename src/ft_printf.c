@@ -46,7 +46,7 @@ static void print_int(char c, char *s_int)
         else if (c == 'o')
             ft_putchar('0');
     }
-    if (s_int[0] != '-' && g_flags.plus)
+    if (s_int[0] != '-' && g_flags.plus && !g_flags.minus)
         ft_putchar('+');
     ft_putstr(s_int);
 }
@@ -62,19 +62,19 @@ static int proccesing_sign(char c)
     return (1);
 }
 
-static void proccesing_flag(char c, char *s_int)
+static void proccesing_int_flag(char c, char *s_int)
 {
     type_oct(c);
     if (g_flags.minus)
     {
         print_int(c, s_int);
-        processing_width(g_flags.zero ? '0' : ' ', g_flags.width - ft_strlen(s_int) - g_flags.plus - g_flags.oct);
+        processing_width(' ', g_flags.width - ft_strlen(s_int) - g_flags.oct);
     }
     else
     {
-        g_flags.plus = !proccesing_sign(s_int[0]);
-        processing_width(g_flags.zero ? '0' : ' ', g_flags.width - ft_strlen(s_int) - g_flags.oct);
-        print_int(c, s_int + (s_int[0] == '-'));
+        g_flags.minus = g_flags.zero ? proccesing_sign(s_int[0]) : 0;
+        processing_width(g_flags.zero ? '0' : ' ', g_flags.width - ft_strlen(s_int) - g_flags.minus - g_flags.oct);
+        print_int(c, s_int + (g_flags.minus && s_int[0] == '-'));
     }
 }
 
@@ -129,7 +129,7 @@ static int  proccesing_int(char c, va_list arg)
     }
     else
         return (0);
-    proccesing_flag(c, s_int);
+    proccesing_int_flag(c, s_int);
     free(s_int);
     return (1);
 }
@@ -161,18 +161,56 @@ static void  print_float(double real)
     }
 }
 
-static int  print_str(char c, va_list arg)
+void ft_putstri(char *str)
 {
-    if (c == 'c')
-        ft_putchar(va_arg(arg, int));
-    else if (c == 's')
-        ft_putstr(va_arg(arg, char *));
-    if (c == 'p')
-        return (0);
-    else if (c == '%')
-        ft_putchar('%');
+    int i;
+    int len;
+
+    i = -1;
+    len = ft_strlen(str);
+    if (g_flags.accuracy)
+        len = ft_min(len, g_flags.accuracy);
+    while (++i < len)
+        ft_putchar(str[i]);
+}
+
+static void proccesing_str_flag(char *s_str)
+{
+    if (g_flags.minus)
+    {
+        ft_putstri(s_str);
+        processing_width(' ', g_flags.width - ft_strlen(s_str));
+    }
     else
-        return (0);
+    {
+        processing_width(' ', g_flags.width - ft_strlen(s_str));
+        ft_putstri(s_str);
+    }
+}
+
+static int  proccesing_str(char c, va_list arg)
+{
+    char *s_str;
+
+    if (c == 'c')
+    {
+        if (g_flags.minus)
+        {
+            ft_putchar(va_arg(arg, int));
+            processing_width(' ', g_flags.width - 1);
+        }
+        else
+        {
+            processing_width(' ', g_flags.width - 1);
+            ft_putchar(va_arg(arg, int));
+        }
+        return (1);
+    }
+    else if (c == 's')
+        s_str = va_arg(arg, char *);
+    if (c == 'p')
+        s_str = va_arg(arg, char *);
+    proccesing_str_flag(s_str);
     return (1);
 }
 
@@ -222,7 +260,9 @@ void     parse_arg(va_list arg)
     char c;
 
     c = parse_flags(arg);
-    if (belongs_set(c, SPECIFIIER_INT))
+    if (c == '%')
+        ft_putchar('%');
+    else if (belongs_set(c, SPECIFIIER_INT))
     {
         proccesing_int(c, arg);
     }
@@ -232,7 +272,7 @@ void     parse_arg(va_list arg)
     }
     else if (belongs_set(c, SPECIFIIER_STR))
     {
-        print_str(c, arg);
+        proccesing_str(c, arg);
     }
 }
 
