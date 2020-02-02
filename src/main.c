@@ -1,8 +1,8 @@
-//#include "ft_printf.h"
+#include "ft_printf.h"
 #include <stdio.h>
 
-int main(int argc, char *argv[])
+int main(void)
 {
-	printf(argv[1], 10);
+	ft_printf("%d", 10);
     return (0);
 }

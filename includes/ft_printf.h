@@ -14,11 +14,11 @@
 # define __FT_PRINTF__
 # include <stdarg.h>
 # include "libft.h"
-# define SPECIFIIER "fdiouxXcsp"
-# define FLAGS "#+-0hl*"
-# define SPECIFIIER_INT "diouxX"
-# define SPECIFIIER_FLOAT "f"
-# define SPECIFIIER_STR "csp"
+# define ASPEC "fdiouxXcsp"
+# define FM "#+-0hl*"
+# define SPEC_INT "diouxX"
+# define SPEC_FLOAT "f"
+# define SPEC_STR "csp"
 
 typedef struct	s_flags
 {
@@ -26,20 +26,31 @@ typedef struct	s_flags
 	int 		plus;
 	int			minus;
 	int			oct;
+	int			width;
+	int			accuracy;
+	int			space;
+}				t_flags;
+
+typedef struct 	s_modifier
+{
 	int			h;
 	int			hh;
 	int			l;
-	int			ll;	
+	int			ll;
 	int			L;
-	int			width;
-	int			accuracy;
-}				t_flags;
+}				t_modifier;
+
+typedef struct	s_printf
+{
+	t_modifier	modifiers;
+	t_flags		flags;
+	const char	*format;
+	int			done;
+}				t_printf;
 
 int				ft_printf(const char *format, ...);
-int				parse_format(va_list arg);
+void			parse_format(va_list arg);
 void			parse_arg(va_list arg);
 
-t_flags			g_flags;
-const char		*g_format;
-int				g_count;
+t_printf g_printf;
 #endif
