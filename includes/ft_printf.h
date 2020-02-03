@@ -14,43 +14,58 @@
 # define __FT_PRINTF__
 # include <stdarg.h>
 # include "libft.h"
-# define ASPEC "fdiouxXcsp"
-# define FM "#+-0hl*"
-# define SPEC_INT "diouxX"
-# define SPEC_FLOAT "f"
-# define SPEC_STR "csp"
+/*
+** --------------------------- FLAGS MASKS ------------------------------------
+*/
+# define FLAGS		" +-#0*"
+# define F_SPACE 	(1 << 0)
+# define F_PLUS		(1 << 1)
+# define F_MINUS	(1 << 2)
+# define F_SHARP	(1 << 3)
+# define F_ZERO		(1 << 4)
+# define F_WILDCARD	(1 << 5)
+# define F_PRECI	(1 << 6)
+# define F_UPCASE	(1 << 7)	
+/*
+** --------------------------- MODIFERS MASKS ----------------------------------
+*/
+# define MODIFERS	"hl"
+# define M_SHORT	(1 << 0)
+# define M_SHORT_2	(1 << 1)
+# define M_LONG		(1 << 2)
+# define M_LONG_2	(1 << 3)
+/*
+** --------------------------- ALL SPECIFIER ------------------------------------------
+*/
+# define S_INT		"dDi"
+# define S_UINT		"uU"
+# define S_HEX		"xX"
+# define S_OCT		"oO"
+# define S_FLOAT	"fF"
+# define S_CHAR		"cC"
+# define S_STR 		"sS"
+# define S_PTR		"p"
 
-typedef struct	s_flags
-{
-	int			zero;
-	int 		plus;
-	int			minus;
-	int			oct;
-	int			width;
-	int			accuracy;
-	int			space;
-}				t_flags;
-
-typedef struct 	s_modifier
-{
-	int			h;
-	int			hh;
-	int			l;
-	int			ll;
-	int			L;
-}				t_modifier;
+# define ORI_LEFT	0
+# define ORI_RIGHT	1
 
 typedef struct	s_printf
 {
-	t_modifier	modifiers;
-	t_flags		flags;
-	const char	*format;
-	int			done;
+	t_si		m;
+	t_si		f;
+	t_uc		c;
+	t_ui		len;
+	t_ui		width;
+	t_l			precision;
+	char		*format;
+	va_list 	arg;
+	t_l			done;
 }				t_printf;
 
+/*
+** --------------------------- FUNCTIONS ------------------------------------------
+*/
 int				ft_printf(const char *format, ...);
-void			parse_format(va_list arg);
-void			parse_arg(va_list arg);
+void			parse_format(t_printf *);
 
-t_printf g_printf;
 #endif

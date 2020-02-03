@@ -3,6 +3,6 @@
 
 int main(void)
 {
-	ft_printf("%d", 10);
+	printf("%04.6d", 10);
     return (0);
 }

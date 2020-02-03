@@ -33,6 +33,7 @@ FUNCS_1 = ft_memset \
 		ft_strncat \
 		ft_strlcat \
 		ft_strchr \
+		ft_strchri \
 		ft_strrchr \
 		ft_strstr \
 		ft_strnstr \
@@ -73,6 +74,7 @@ FUNCS_2 = \
 		ft_putstr_fd \
 		ft_putendl_fd \
 		ft_strclr
+
 FUNCS_3	= \
         ft_lstnew \
         ft_lstdelone \
@@ -80,6 +82,7 @@ FUNCS_3	= \
         ft_lstiter \
         ft_lstmap \
         ft_lstadd
+
 MY_FUNCS = \
 		ft_max \
 		ft_min \
