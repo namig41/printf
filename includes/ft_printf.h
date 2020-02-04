@@ -39,15 +39,18 @@
 */
 # define S_INT		"dDi"
 # define S_UINT		"uU"
-# define S_HEX		"xX"
+# define S_HEX		"xXp"
 # define S_OCT		"oO"
 # define S_FLOAT	"fF"
 # define S_CHAR		"cC"
 # define S_STR 		"sS"
-# define S_PTR		"p"
+# define PERCENT	"%"
 
 # define ORI_LEFT	0
 # define ORI_RIGHT	1
+
+# define BASE_16	16
+# define BASE_8		8
 
 typedef struct	s_printf
 {

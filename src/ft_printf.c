@@ -16,9 +16,9 @@ static void     parse_modifers(t_printf *p)
 {
     while (1)
     {
-       if (*p->format == 'l')
-            p->m |= (1 << (p->format[1] == 'l' && p->format++));
-        else if (*p->format == 'h')
+       if (*p->format == 'h')
+            p->m |= (1 << (p->format[1] == 'h' && p->format++));
+        else if (*p->format == 'l')
             p->m |= (1 << (2 + (p->format[1] == 'l' && p->format++)));
         else
             return ;
@@ -30,17 +30,20 @@ static void	parse_point(t_printf *p)
 {
 	if (ft_isdigit(*p->format))
 	{
-		p->width = ft_max(1, ft_atoi(p->format));
+		//p->width = ft_max(1, ft_atoi(p->format));
+		p->width = ft_atoi(p->format);
 		while (ft_isdigit(*p->format))
 			++p->format;
 	}
 	if (*p->format == '.')
 	{
 		++p->format;
-		p->precision = ft_max(ft_atoi(p->format), 0);
+		//p->precision = ft_max(ft_atoi(p->format), 0);
+		p->precision = ft_atoi(p->format);
 		while (ft_isdigit(*p->format))
 			++p->format;
 		p->f |= F_PRECI;
+		p->f &= ~F_ZERO;
 	}
 }
 
@@ -49,13 +52,13 @@ static void parse_flags(t_printf *p)
     int  n;
 
     while (((n = ft_strchri(FLAGS, *p->format)) > -1) && p->format++)
-        p->f |= (1 << n);
-    p->f &= (p->f & F_PLUS) ? (~F_SPACE) : 1;
-    if (p->f & F_WILDCARD && (p->width = va_arg(p->arg, int) < 0))
+    	p->f |= (1 << n);
+	p->f &= (p->f & F_PLUS) ? (~F_SPACE) : 0xFFFF;
+	if (p->f & F_WILDCARD && (p->width = va_arg(p->arg, int) < 0))
     {
             p->f |= F_MINUS;
             p->width = -p->width;
-     }
+    }
 }
 
 static void putchars(t_printf *p, char c, int count, t_si ori)
@@ -64,17 +67,17 @@ static void putchars(t_printf *p, char c, int count, t_si ori)
         return ;
     if (ori == ORI_LEFT && !(p->f & F_MINUS))
         while (count-- > 0)
-            ft_putchar(c);
+            p->done += ft_putchar(c);
     else if (ori == ORI_RIGHT && (p->f & F_MINUS))
         while (count-- > 0)
-            ft_putchar(c);
+			p->done += ft_putchar(c);
 }
 
 static t_uc save_sign(t_printf *p, char **str_int)
 {
     if (**str_int == '-')
     {
-        p->f &= (p->f & F_PLUS) ? ~F_PLUS : 1;
+        p->f &= ~F_PLUS;
         ++*str_int;
         --p->len;
         return '-';
@@ -93,13 +96,13 @@ static void print_int(t_printf *p, char *str_int)
 
     sign = save_sign(p, &str_int);
     p->width -= ft_max(p->precision, p->len);
-    p->width -= (sign > 0) ? 1 : 0; 
+    p->width -= (sign > 0) ? 1 : 0;
     p->precision -= p->len;
-    putchars(p, ' ', p->width, ORI_LEFT);
-    ft_putchar((p->f & F_ZERO || p->precision >= 0) * sign);
-    putchars(p, '0', p->precision, ORI_LEFT);
-    ft_putchar(!(p->f & F_ZERO || p->precision >= 0) * sign);
-    ft_putstr(str_int);
+	putchars(p, ' ', !(p->f & F_ZERO) ? p->width : 0, ORI_LEFT);
+	p->done += ft_putchar(sign);
+	putchars(p, '0', (p->f & F_ZERO) ? p->width : p->precision, ORI_LEFT);
+	//p->done += ft_putchar(!(p->f & F_ZERO || p->precision >= 0) * sign);
+	p->done += ft_putstr(str_int, ft_strlen(str_int));
     putchars(p, ' ', p->width, ORI_RIGHT);
 }
 
@@ -118,7 +121,7 @@ static void handle_int(t_printf *p)
     free(str_int);
 }
 
-static void pirnt_uint(t_printf *p, char *str_uint)
+static void print_uint(t_printf *p, char *str_uint)
 {
     print_int(p, str_uint);
 }
@@ -138,20 +141,22 @@ static void handle_uint(t_printf *p)
     free(str_uint);
 }
 
-static void print_hex(t_pritnf *p, char *str_hex)
+static void print_hex(t_printf *p, char *str_hex)
 {
-    
     char *pref;
 
-    pref = (p->f & F_SHARP) ? "0x" : 0;
+    pref = 0;
+    if (p->f & F_SHARP && *str_hex != '0')
+    	pref = (p->f & F_UPCASE) ? "0X" : "0x";
+    if (p->c == 'p')
+		pref = "0x";
     p->width -= ft_max(p->precision, p->len);
-    p->width -= (pref) ? 2 : 0; 
+    p->width -= ft_strlen(pref);
     p->precision -= p->len;
-    putchars(p, ' ', p->width, ORI_LEFT);
-    ft_putstr((p->f & F_ZERO || p->precision >= 0) ? pref : 0);
-    putchars(p, '0', p->precision, ORI_LEFT);
-    ft_putstr(!(p->f & F_ZERO || p->precision >= 0) ? pref : 0);
-    ft_putstr(str_hex);
+    putchars(p, ' ', !(p->f & F_ZERO) ? p->width : 0, ORI_LEFT);
+	p->done += ft_putstr(pref, ft_strlen(pref));
+    putchars(p, '0', (p->f & F_ZERO) ? p->width : p->precision, ORI_LEFT);
+	p->done += ft_putstr(str_hex,  ft_strlen(str_hex));
     putchars(p, ' ', p->width, ORI_RIGHT);
 }
 
@@ -160,16 +165,81 @@ static void handle_hex(t_printf *p)
 {
     char *str_hex;
 
+    if (p->c == 'p')
+    {
+    	p->m |= M_LONG_2;
+    	p->f &= ~F_ZERO;
+		p->f &= ~F_PLUS;
+    }
     if (p->m & M_LONG || p->m & M_LONG_2)
-        str_hex = (p->f & M_LONG) ? ft_ulltoa_base(va_arg(p->arg, t_ul), 16, p->c) : ft_ulltoa_base(va_arg(p->arg, t_ull), 16, p->c);
+        str_hex = (p->f & M_LONG) ? ft_ulltoa_base(va_arg(p->arg, t_ul), BASE_16, p->c) : ft_ulltoa_base(va_arg(p->arg, t_ull), BASE_16, p->c);
     else if (p->m & M_SHORT || p->m & M_SHORT_2)
-        str_hex = (p->f & M_SHORT) ? ft_ulltoa_base((t_usi)va_arg(p->arg, t_ui), 16, p->c) : ft_ulltoa_base((t_uc)va_arg(p->arg, t_ui), 16, p->c);
+        str_hex = (p->f & M_SHORT) ? ft_ulltoa_base((t_usi)va_arg(p->arg, t_ui), BASE_16, p->c) : ft_ulltoa_base((t_uc)va_arg(p->arg, t_ui), BASE_16, p->c);
     else
-        str_uint = ft_lltoa(va_arg(p->arg, t_ui));
+        str_hex = ft_ulltoa_base(va_arg(p->arg, t_ui), BASE_16, p->c);
     p->f |= ('A' <= p->c && p->c <= 'Z' && p->f & F_SHARP) ? F_UPCASE : 0;
     p->len = ft_strlen(str_hex);
     print_hex(p, str_hex);
     free(str_hex);
+}
+
+static void print_oct(t_printf *p, char *str_oct)
+{
+	char *pref;
+
+	pref = 0;
+	if (p->f & F_SHARP && *str_oct != '0')
+		pref = "0";
+	p->width -= ft_max(p->precision, p->len);
+	p->width -= ft_strlen(pref);
+	p->precision -= p->len;
+	putchars(p, ' ', !(p->f & F_ZERO) ? p->width : 0, ORI_LEFT);
+	p->done += ft_putstr(pref, p->width);
+	putchars(p, '0', (p->f & F_ZERO) ? p->width : p->precision, ORI_LEFT);
+	p->done += ft_putstr(str_oct, ft_strlen(str_oct));
+	putchars(p, ' ', p->width, ORI_RIGHT);
+}
+
+static void handle_oct(t_printf *p)
+{
+	char *str_oct;
+
+	if (p->m & M_LONG || p->m & M_LONG_2)
+		str_oct = (p->f & M_LONG) ? ft_ulltoa_base(va_arg(p->arg, t_ul), BASE_8, p->c) : ft_ulltoa_base(va_arg(p->arg, t_ull), BASE_8, p->c);
+	else if (p->m & M_SHORT || p->m & M_SHORT_2)
+		str_oct = (p->f & M_SHORT) ? ft_ulltoa_base((t_usi)va_arg(p->arg, t_ui), BASE_8, p->c) : ft_ulltoa_base((t_uc)va_arg(p->arg, t_ui), BASE_8, p->c);
+	else
+		str_oct = ft_ulltoa_base(va_arg(p->arg, t_ui), BASE_8, p->c);
+	p->len = ft_strlen(str_oct);
+	print_oct(p, str_oct);
+	free(str_oct);
+}
+
+static void handle_char(t_printf *p)
+{
+	putchars(p, ' ', p->width - 1, ORI_LEFT);
+	p->done += ft_putchar((t_uc)va_arg(p->arg, int));
+	putchars(p, ' ', p->width - 1, ORI_RIGHT);
+}
+
+static void handle_str(t_printf *p)
+{
+	char *str;
+
+	str = va_arg(p->arg, char *);
+	p->len = ft_strlen(str);
+	p->precision = p->precision ? ft_min(p->len, p->precision) : p->len;
+	p->width -= p->precision;
+	putchars(p, ' ', p->width, ORI_LEFT);
+	p->done += ft_putstr(str, p->precision);
+	//write(1, str, p->precision);
+	putchars(p, ' ', p->width, ORI_RIGHT);
+}
+
+
+static void handle_percent(t_printf *p)
+{
+	print_int(p, "%");
 }
 
 static void search_specifier(t_printf *p)
@@ -181,16 +251,16 @@ static void search_specifier(t_printf *p)
         handle_uint(p);
      else if (ft_strchr(S_HEX, p->c))
          handle_hex(p);
-    // else if (ft_strchr(S_OCT, p->c))
-    //     handle_oct(p);
+     else if (ft_strchr(S_OCT, p->c))
+         handle_oct(p);
+     else if (ft_strchr(S_CHAR, p->c))
+         handle_char(p);
+     else if (ft_strchr(S_STR, p->c))
+         handle_str(p);
+     else if (ft_strchr(PERCENT, p->c))
+     	handle_percent(p);
     // else if (ft_strchr(S_FLOAT, p->c))
-    //     handle_float(p);
-    // else if (ft_strchr(S_CHAR, p->c))
-    //     handle_char(p);
-    // else if (ft_strchr(S_STR, p->c))
-    //     handle_str(p);
-    // else if (ft_strchr(S_PTR, p->c))
-    //     handle_ptr(p);
+    //    //     handle_float(p);
     else
         return ;
 }
@@ -217,11 +287,9 @@ void            parse_format(t_printf *p)
             p->format++;
             if (*p->format)
 				handle_specifier(p);
-            else
-                break ;
         }
         else
-            ft_putchar(*p->format);
+            p->done += ft_putchar(*p->format);
         p->format++;
     }
 }
@@ -234,5 +302,6 @@ int         ft_printf(const char *format, ...)
     p.format = (char *)format;
     va_start(p.arg, format);
     parse_format(&p);
+    va_end(p.arg);
     return (p.done);
 }

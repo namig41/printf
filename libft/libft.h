@@ -95,8 +95,8 @@ char						*ft_uitoa_base(t_ui value, int base, char reg);
 char						*ft_ulltoa_base(t_ull value, int base, char reg);
 int							ft_strequ(char const *s1, char const *s2);
 
-void						ft_putchar(char c);
-void						ft_putstr(char const *s);
+int							ft_putchar(char c);
+int							ft_putstr(char const *s, int width);
 void						ft_putendl(char const *s);
 void						ft_putnbr(int n);
 
