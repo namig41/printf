@@ -118,13 +118,69 @@ static void handle_int(t_printf *p)
     free(str_int);
 }
 
+static void pirnt_uint(t_printf *p, char *str_uint)
+{
+    print_int(p, str_uint);
+}
+
+static void handle_uint(t_printf *p)
+{
+    char *str_uint;
+
+    if (p->m & M_LONG || p->m & M_LONG_2)
+        str_uint = (p->f & M_LONG) ? ft_lltoa(va_arg(p->arg, t_ul)) : ft_lltoa(va_arg(p->arg, t_ull));
+    else if (p->m & M_SHORT || p->m & M_SHORT_2)
+        str_uint = (p->f & M_SHORT) ? ft_lltoa((t_usi)va_arg(p->arg, t_ui)) : ft_lltoa((t_uc)va_arg(p->arg, t_ui));
+    else
+        str_uint = ft_lltoa(va_arg(p->arg, t_ui));
+    p->len = ft_strlen(str_uint);
+    print_uint(p, str_uint);
+    free(str_uint);
+}
+
+static void print_hex(t_pritnf *p, char *str_hex)
+{
+    
+    char *pref;
+
+    pref = (p->f & F_SHARP) ? "0x" : 0;
+    p->width -= ft_max(p->precision, p->len);
+    p->width -= (pref) ? 2 : 0; 
+    p->precision -= p->len;
+    putchars(p, ' ', p->width, ORI_LEFT);
+    ft_putstr((p->f & F_ZERO || p->precision >= 0) ? pref : 0);
+    putchars(p, '0', p->precision, ORI_LEFT);
+    ft_putstr(!(p->f & F_ZERO || p->precision >= 0) ? pref : 0);
+    ft_putstr(str_hex);
+    putchars(p, ' ', p->width, ORI_RIGHT);
+}
+
+
+static void handle_hex(t_printf *p)
+{
+    char *str_hex;
+
+    if (p->m & M_LONG || p->m & M_LONG_2)
+        str_hex = (p->f & M_LONG) ? ft_ulltoa_base(va_arg(p->arg, t_ul), 16, p->c) : ft_ulltoa_base(va_arg(p->arg, t_ull), 16, p->c);
+    else if (p->m & M_SHORT || p->m & M_SHORT_2)
+        str_hex = (p->f & M_SHORT) ? ft_ulltoa_base((t_usi)va_arg(p->arg, t_ui), 16, p->c) : ft_ulltoa_base((t_uc)va_arg(p->arg, t_ui), 16, p->c);
+    else
+        str_uint = ft_lltoa(va_arg(p->arg, t_ui));
+    p->f |= ('A' <= p->c && p->c <= 'Z' && p->f & F_SHARP) ? F_UPCASE : 0;
+    p->len = ft_strlen(str_hex);
+    print_hex(p, str_hex);
+    free(str_hex);
+}
+
 static void search_specifier(t_printf *p)
 {
     p->c = *p->format;
     if (ft_strchr(S_INT, p->c))
         handle_int(p);
-    // else if (ft_strchr(S_HEX, p->c))
-    //     handle_hex(p);
+    else if (ft_strchr(S_UINT, p->c))
+        handle_uint(p);
+     else if (ft_strchr(S_HEX, p->c))
+         handle_hex(p);
     // else if (ft_strchr(S_OCT, p->c))
     //     handle_oct(p);
     // else if (ft_strchr(S_FLOAT, p->c))
