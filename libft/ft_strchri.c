@@ -19,7 +19,7 @@ int		ft_strchri(const char *s, int c)
     i = -1;
     c = (t_uc)c;
 	while (s[++i])
-		if (s[i] == c)
+        if (s[i] == c)
 			return (i);
 	return (-1);
 }
