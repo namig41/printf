@@ -30,7 +30,6 @@ static void	parse_point(t_printf *p)
 {
 	if (ft_isdigit(*p->format))
 	{
-		//p->width = ft_max(1, ft_atoi(p->format));
 		p->width = ft_atoi(p->format);
 		while (ft_isdigit(*p->format))
 			++p->format;
@@ -38,7 +37,6 @@ static void	parse_point(t_printf *p)
 	if (*p->format == '.')
 	{
 		++p->format;
-		//p->precision = ft_max(ft_atoi(p->format), 0);
 		p->precision = ft_atoi(p->format);
 		while (ft_isdigit(*p->format))
 			++p->format;
@@ -51,8 +49,8 @@ static void parse_flags(t_printf *p)
 {
     int  n;
 
-    while (((n = ft_strchri(FLAGS, *p->format)) > -1) && p->format++)
-    	p->f |= (1 << n);
+    while ((n = ft_strchri(FLAGS, *p->format) > -1) && p->format++)
+        p->f |= (1 << n);
 	p->f &= (p->f & F_PLUS) ? (~F_SPACE) : 0xFFFF;
 	if (p->f & F_WILDCARD && (p->width = va_arg(p->arg, int) < 0))
     {
@@ -73,42 +71,22 @@ static void putchars(t_printf *p, char c, int count, t_si ori)
 			p->done += ft_putchar(c);
 }
 
-static t_uc save_sign(t_printf *p, char **str_int)
+static void print_nbr(t_printf *p, char *s, char *pref)
 {
-    if (**str_int == '-')
-    {
-        p->f &= ~F_PLUS;
-        ++*str_int;
-        --p->len;
-        return '-';
-    }
-    else if (p->f & F_PLUS)
-        return '+';
-    else if (p->f & F_SPACE)
-        return ' ';
-    else
-        return (0);
-}
-
-static void print_int(t_printf *p, char *str_int)
-{
-    t_uc sign;
-
-    sign = save_sign(p, &str_int);
     p->width -= ft_max(p->precision, p->len);
-    p->width -= (sign > 0) ? 1 : 0;
+    p->width -= ft_strlen(pref);
     p->precision -= p->len;
-	putchars(p, ' ', !(p->f & F_ZERO) ? p->width : 0, ORI_LEFT);
-	p->done += ft_putchar(sign);
-	putchars(p, '0', (p->f & F_ZERO) ? p->width : p->precision, ORI_LEFT);
-	//p->done += ft_putchar(!(p->f & F_ZERO || p->precision >= 0) * sign);
-	p->done += ft_putstr(str_int, ft_strlen(str_int));
+    putchars(p, ' ', !(p->f & F_ZERO) ? p->width : 0, ORI_LEFT);
+	p->done += ft_putstr(pref, ft_strlen(pref));
+    putchars(p, '0', (p->f & F_ZERO) ? p->width : p->precision, ORI_LEFT);
+	p->done += ft_putstr(s, ft_strlen(s));
     putchars(p, ' ', p->width, ORI_RIGHT);
 }
 
 static void handle_int(t_printf *p)
 {
     char *str_int;
+    char *pref;
 
     if (p->m & M_LONG || p->m & M_LONG_2)
         str_int = (p->f & M_LONG) ? ft_lltoa(va_arg(p->arg, t_l)) : ft_lltoa(va_arg(p->arg, t_ll));
@@ -117,13 +95,11 @@ static void handle_int(t_printf *p)
     else
         str_int = ft_lltoa(va_arg(p->arg, int));
     p->len = ft_strlen(str_int);
-    print_int(p, str_int);
+    pref = (*str_int == '-' && p->len--) ? "-" : 0;
+    pref = (!pref && p->f & F_PLUS) ? "+" : pref;
+    pref = (!pref && p->f & F_SPACE) ? " " : pref;
+    print_nbr(p, str_int + (*str_int == '-'), pref);
     free(str_int);
-}
-
-static void print_uint(t_printf *p, char *str_uint)
-{
-    print_int(p, str_uint);
 }
 
 static void handle_uint(t_printf *p)
@@ -137,33 +113,15 @@ static void handle_uint(t_printf *p)
     else
         str_uint = ft_lltoa(va_arg(p->arg, t_ui));
     p->len = ft_strlen(str_uint);
-    print_uint(p, str_uint);
+    print_nbr(p, str_uint, 0);
     free(str_uint);
-}
-
-static void print_hex(t_printf *p, char *str_hex)
-{
-    char *pref;
-
-    pref = 0;
-    if (p->f & F_SHARP && *str_hex != '0')
-    	pref = (p->f & F_UPCASE) ? "0X" : "0x";
-    if (p->c == 'p')
-		pref = "0x";
-    p->width -= ft_max(p->precision, p->len);
-    p->width -= ft_strlen(pref);
-    p->precision -= p->len;
-    putchars(p, ' ', !(p->f & F_ZERO) ? p->width : 0, ORI_LEFT);
-	p->done += ft_putstr(pref, ft_strlen(pref));
-    putchars(p, '0', (p->f & F_ZERO) ? p->width : p->precision, ORI_LEFT);
-	p->done += ft_putstr(str_hex,  ft_strlen(str_hex));
-    putchars(p, ' ', p->width, ORI_RIGHT);
 }
 
 
 static void handle_hex(t_printf *p)
 {
     char *str_hex;
+    char *pref;
 
     if (p->c == 'p')
     {
@@ -179,30 +137,16 @@ static void handle_hex(t_printf *p)
         str_hex = ft_ulltoa_base(va_arg(p->arg, t_ui), BASE_16, p->c);
     p->f |= ('A' <= p->c && p->c <= 'Z' && p->f & F_SHARP) ? F_UPCASE : 0;
     p->len = ft_strlen(str_hex);
-    print_hex(p, str_hex);
+    pref = (p->f & F_SHARP && *str_hex != '0') ? "0x" : 0;
+    pref = (pref && p->c != 'p' && p->f && p->f & F_UPCASE) ? "0X" : pref;
+    print_nbr(p, str_hex, pref); 
     free(str_hex);
-}
-
-static void print_oct(t_printf *p, char *str_oct)
-{
-	char *pref;
-
-	pref = 0;
-	if (p->f & F_SHARP && *str_oct != '0')
-		pref = "0";
-	p->width -= ft_max(p->precision, p->len);
-	p->width -= ft_strlen(pref);
-	p->precision -= p->len;
-	putchars(p, ' ', !(p->f & F_ZERO) ? p->width : 0, ORI_LEFT);
-	p->done += ft_putstr(pref, p->width);
-	putchars(p, '0', (p->f & F_ZERO) ? p->width : p->precision, ORI_LEFT);
-	p->done += ft_putstr(str_oct, ft_strlen(str_oct));
-	putchars(p, ' ', p->width, ORI_RIGHT);
 }
 
 static void handle_oct(t_printf *p)
 {
 	char *str_oct;
+    char *pref;
 
 	if (p->m & M_LONG || p->m & M_LONG_2)
 		str_oct = (p->f & M_LONG) ? ft_ulltoa_base(va_arg(p->arg, t_ul), BASE_8, p->c) : ft_ulltoa_base(va_arg(p->arg, t_ull), BASE_8, p->c);
@@ -211,7 +155,8 @@ static void handle_oct(t_printf *p)
 	else
 		str_oct = ft_ulltoa_base(va_arg(p->arg, t_ui), BASE_8, p->c);
 	p->len = ft_strlen(str_oct);
-	print_oct(p, str_oct);
+    pref = (p->f & F_SHARP && *str_oct != '0') ? "0" : 0;
+    print_nbr(p, str_oct, pref);
 	free(str_oct);
 }
 
@@ -228,18 +173,11 @@ static void handle_str(t_printf *p)
 
 	str = va_arg(p->arg, char *);
 	p->len = ft_strlen(str);
-	p->precision = p->precision ? ft_min(p->len, p->precision) : p->len;
+	p->precision = p->precision ? ft_min(p->len, p->precision) : (t_l)p->len;
 	p->width -= p->precision;
 	putchars(p, ' ', p->width, ORI_LEFT);
 	p->done += ft_putstr(str, p->precision);
-	//write(1, str, p->precision);
 	putchars(p, ' ', p->width, ORI_RIGHT);
-}
-
-
-static void handle_percent(t_printf *p)
-{
-	print_int(p, "%");
 }
 
 static void search_specifier(t_printf *p)
@@ -249,16 +187,16 @@ static void search_specifier(t_printf *p)
         handle_int(p);
     else if (ft_strchr(S_UINT, p->c))
         handle_uint(p);
-     else if (ft_strchr(S_HEX, p->c))
-         handle_hex(p);
-     else if (ft_strchr(S_OCT, p->c))
-         handle_oct(p);
-     else if (ft_strchr(S_CHAR, p->c))
-         handle_char(p);
-     else if (ft_strchr(S_STR, p->c))
-         handle_str(p);
-     else if (ft_strchr(PERCENT, p->c))
-     	handle_percent(p);
+    else if (ft_strchr(S_HEX, p->c))
+        handle_hex(p);
+    else if (ft_strchr(S_OCT, p->c))
+        handle_oct(p);
+    else if (ft_strchr(S_CHAR, p->c))
+        handle_char(p);
+    else if (ft_strchr(S_STR, p->c))
+        handle_str(p);
+    else if (ft_strchr(PERCENT, p->c))
+        print_nbr(p, 0, "%");
     // else if (ft_strchr(S_FLOAT, p->c))
     //    //     handle_float(p);
     else
