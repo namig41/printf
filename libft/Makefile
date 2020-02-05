@@ -6,13 +6,11 @@
 #    By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 15:54:57 by lcarmelo          #+#    #+#              #
-#    Updated: 2019/09/27 15:55:04 by lcarmelo         ###   ########.fr        #
+#    Updated: 2020/02/05 15:00:42 by lcarmelo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 		
 MY_FUNCS = \
-		ft_max \
-		ft_min \
         ft_memset \
         ft_atoi \
         ft_bzero \

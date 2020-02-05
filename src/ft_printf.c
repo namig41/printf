@@ -6,11 +6,12 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2019/11/29 22:30:41 by fpythago         ###   ########.fr       */
+/*   Updated: 2020/02/05 19:22:28 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>
 
 static void     parse_modifers(t_printf *p)
 {
@@ -43,13 +44,14 @@ static void	parse_point(t_printf *p)
 		p->f |= F_PRECI;
 		p->f &= ~F_ZERO;
 	}
+    p->f &= (!p->precision && p->f & F_MINUS) ? (~F_ZERO) : 0xFFFF;
 }
 
 static void parse_flags(t_printf *p)
 {
     int  n;
 
-    while ((n = ft_strchri(FLAGS, *p->format) > -1) && p->format++)
+    while (((n = ft_strchri(FLAGS, *p->format)) > -1) && p->format++)
         p->f |= (1 << n);
 	p->f &= (p->f & F_PLUS) ? (~F_SPACE) : 0xFFFF;
 	if (p->f & F_WILDCARD && (p->width = va_arg(p->arg, int) < 0))
@@ -59,28 +61,23 @@ static void parse_flags(t_printf *p)
     }
 }
 
-static void putchars(t_printf *p, char c, int count, t_si ori)
+static void putchars(t_printf *p, char c, int count, t_si f_print)
 {
-    if (!count)
-        return ;
-    if (ori == ORI_LEFT && !(p->f & F_MINUS))
+    if (f_print)
         while (count-- > 0)
             p->done += ft_putchar(c);
-    else if (ori == ORI_RIGHT && (p->f & F_MINUS))
-        while (count-- > 0)
-			p->done += ft_putchar(c);
 }
 
 static void print_nbr(t_printf *p, char *s, char *pref)
 {
-    p->width -= ft_max(p->precision, p->len);
+    p->width -= FT_MAX(p->precision, p->len);
     p->width -= ft_strlen(pref);
     p->precision -= p->len;
-    putchars(p, ' ', !(p->f & F_ZERO) ? p->width : 0, ORI_LEFT);
+    putchars(p, ' ', !(p->f & F_ZERO) ? p->width : 0, !(p->f & F_MINUS));
 	p->done += ft_putstr(pref, ft_strlen(pref));
-    putchars(p, '0', (p->f & F_ZERO) ? p->width : p->precision, ORI_LEFT);
+    putchars(p, '0', (p->f & F_ZERO) ? p->width : p->precision, 1);
 	p->done += ft_putstr(s, ft_strlen(s));
-    putchars(p, ' ', p->width, ORI_RIGHT);
+    putchars(p, ' ', p->width, p->f & F_MINUS);
 }
 
 static void handle_int(t_printf *p)
@@ -89,9 +86,9 @@ static void handle_int(t_printf *p)
     char *pref;
 
     if (p->m & M_LONG || p->m & M_LONG_2)
-        str_int = (p->f & M_LONG) ? ft_lltoa(va_arg(p->arg, t_l)) : ft_lltoa(va_arg(p->arg, t_ll));
+        str_int = (p->m & M_LONG) ? ft_lltoa(va_arg(p->arg, t_l)) : ft_lltoa(va_arg(p->arg, t_ll));
     else if (p->m & M_SHORT || p->m & M_SHORT_2)
-        str_int = (p->f & M_SHORT) ? ft_lltoa((t_si)va_arg(p->arg, int)) : ft_lltoa((char)va_arg(p->arg, int));
+        str_int = (p->m & M_SHORT) ? ft_lltoa((t_si)va_arg(p->arg, int)) : ft_lltoa((char)va_arg(p->arg, int));
     else
         str_int = ft_lltoa(va_arg(p->arg, int));
     p->len = ft_strlen(str_int);
@@ -107,9 +104,9 @@ static void handle_uint(t_printf *p)
     char *str_uint;
 
     if (p->m & M_LONG || p->m & M_LONG_2)
-        str_uint = (p->f & M_LONG) ? ft_lltoa(va_arg(p->arg, t_ul)) : ft_lltoa(va_arg(p->arg, t_ull));
+        str_uint = (p->m & M_LONG) ? ft_ulltoa_base(va_arg(p->arg, t_ul), BASE_10, 0) : ft_ulltoa_base(va_arg(p->arg, t_ull), BASE_10, 0);
     else if (p->m & M_SHORT || p->m & M_SHORT_2)
-        str_uint = (p->f & M_SHORT) ? ft_lltoa((t_usi)va_arg(p->arg, t_ui)) : ft_lltoa((t_uc)va_arg(p->arg, t_ui));
+        str_uint = (p->m & M_SHORT) ? ft_ulltoa_base((t_usi)va_arg(p->arg, t_ui), BASE_10, 0) : ft_ulltoa_base((t_uc)va_arg(p->arg, t_ui), BASE_10, 0);
     else
         str_uint = ft_lltoa(va_arg(p->arg, t_ui));
     p->len = ft_strlen(str_uint);
@@ -126,13 +123,12 @@ static void handle_hex(t_printf *p)
     if (p->c == 'p')
     {
     	p->m |= M_LONG_2;
-    	p->f &= ~F_ZERO;
-		p->f &= ~F_PLUS;
+        p->f &= ~(F_ZERO | F_PLUS);
     }
     if (p->m & M_LONG || p->m & M_LONG_2)
-        str_hex = (p->f & M_LONG) ? ft_ulltoa_base(va_arg(p->arg, t_ul), BASE_16, p->c) : ft_ulltoa_base(va_arg(p->arg, t_ull), BASE_16, p->c);
+        str_hex = (p->m & M_LONG) ? ft_ulltoa_base(va_arg(p->arg, t_ul), BASE_16, p->c) : ft_ulltoa_base(va_arg(p->arg, t_ull), BASE_16, p->c);
     else if (p->m & M_SHORT || p->m & M_SHORT_2)
-        str_hex = (p->f & M_SHORT) ? ft_ulltoa_base((t_usi)va_arg(p->arg, t_ui), BASE_16, p->c) : ft_ulltoa_base((t_uc)va_arg(p->arg, t_ui), BASE_16, p->c);
+        str_hex = (p->m & M_SHORT) ? ft_ulltoa_base((t_usi)va_arg(p->arg, t_ui), BASE_16, p->c) : ft_ulltoa_base((t_uc)va_arg(p->arg, t_ui), BASE_16, p->c);
     else
         str_hex = ft_ulltoa_base(va_arg(p->arg, t_ui), BASE_16, p->c);
     p->f |= ('A' <= p->c && p->c <= 'Z' && p->f & F_SHARP) ? F_UPCASE : 0;
@@ -149,9 +145,9 @@ static void handle_oct(t_printf *p)
     char *pref;
 
 	if (p->m & M_LONG || p->m & M_LONG_2)
-		str_oct = (p->f & M_LONG) ? ft_ulltoa_base(va_arg(p->arg, t_ul), BASE_8, p->c) : ft_ulltoa_base(va_arg(p->arg, t_ull), BASE_8, p->c);
+		str_oct = (p->m & M_LONG) ? ft_ulltoa_base(va_arg(p->arg, t_ul), BASE_8, p->c) : ft_ulltoa_base(va_arg(p->arg, t_ull), BASE_8, p->c);
 	else if (p->m & M_SHORT || p->m & M_SHORT_2)
-		str_oct = (p->f & M_SHORT) ? ft_ulltoa_base((t_usi)va_arg(p->arg, t_ui), BASE_8, p->c) : ft_ulltoa_base((t_uc)va_arg(p->arg, t_ui), BASE_8, p->c);
+		str_oct = (p->m & M_SHORT) ? ft_ulltoa_base((t_usi)va_arg(p->arg, t_ui), BASE_8, p->c) : ft_ulltoa_base((t_uc)va_arg(p->arg, t_ui), BASE_8, p->c);
 	else
 		str_oct = ft_ulltoa_base(va_arg(p->arg, t_ui), BASE_8, p->c);
 	p->len = ft_strlen(str_oct);
@@ -162,9 +158,9 @@ static void handle_oct(t_printf *p)
 
 static void handle_char(t_printf *p)
 {
-	putchars(p, ' ', p->width - 1, ORI_LEFT);
+	putchars(p, ' ', p->width - 1, !(p->f & F_MINUS));
 	p->done += ft_putchar((t_uc)va_arg(p->arg, int));
-	putchars(p, ' ', p->width - 1, ORI_RIGHT);
+	putchars(p, ' ', p->width - 1, p->f & F_MINUS);
 }
 
 static void handle_str(t_printf *p)
@@ -172,12 +168,17 @@ static void handle_str(t_printf *p)
 	char *str;
 
 	str = va_arg(p->arg, char *);
+    if (!str)
+	{
+        p->done += ft_putstr(STR_NULL, sizeof(STR_NULL));
+        return ;
+    }
 	p->len = ft_strlen(str);
-	p->precision = p->precision ? ft_min(p->len, p->precision) : (t_l)p->len;
+	p->precision = p->precision ? FT_MIN(p->len, p->precision) : p->len;
 	p->width -= p->precision;
-	putchars(p, ' ', p->width, ORI_LEFT);
+	putchars(p, ' ', p->width, !(p->f & F_MINUS));
 	p->done += ft_putstr(str, p->precision);
-	putchars(p, ' ', p->width, ORI_RIGHT);
+	putchars(p, ' ', p->width, p->f & F_MINUS);
 }
 
 static void search_specifier(t_printf *p)

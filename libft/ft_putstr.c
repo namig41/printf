@@ -6,7 +6,7 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 16:05:17 by lcarmelo          #+#    #+#             */
-/*   Updated: 2019/09/27 16:05:19 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2020/02/05 15:29:09 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		ft_putstr(char const *s, int width)
 	{
 		i = 0;
 		len = ft_strlen(s);
-		width = (width > 0) ? ft_min(len, width) : 0;
+		width = (width > 0) ? FT_MIN(len, width) : 0;
 		while (i < width)
 			count += ft_putchar(s[i++]);
 	}

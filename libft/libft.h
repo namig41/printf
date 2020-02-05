@@ -6,7 +6,7 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 20:36:34 by lcarmelo          #+#    #+#             */
-/*   Updated: 2019/11/29 22:01:01 by fpythago         ###   ########.fr       */
+/*   Updated: 2020/02/05 19:02:49 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <string.h>
+# define FT_MAX(a, b) a - ((a - b) & ((a - b) >> 31))
+# define FT_MIN(a, b) b + ((a - b) & ((a - b) >> 31))
 
 typedef struct				s_list
 {
@@ -118,8 +120,6 @@ void						ft_lstiter(t_list *lst,
 t_list						*ft_lstmap(t_list *lst,
 										t_list *(*f)(t_list *elem));
 
-int							ft_max(int a, int b);
-int							ft_min(int a, int b);
 size_t						ft_sqrt(size_t num);
 t_ui						ft_random(t_ui rand_max);
 

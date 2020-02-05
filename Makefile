@@ -6,7 +6,7 @@
 #    By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 15:54:57 by lcarmelo          #+#    #+#              #
-#    Updated: 2019/09/27 15:55:04 by lcarmelo         ###   ########.fr        #
+#    Updated: 2020/02/05 15:05:32 by lcarmelo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,8 +30,6 @@ MY_FUNCS = \
         ft_strchri \
         ft_strlen \
         ft_memset \
-		ft_max \
-		ft_min \
 		ft_lltoa \
 		ft_uitoa_base \
 		ft_ulltoa_base \
