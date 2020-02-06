@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr.c                                        :+:      :+:    :+:   */
+/*   ft_memalloc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/27 16:04:50 by lcarmelo          #+#    #+#             */
-/*   Updated: 2019/09/27 16:04:52 by lcarmelo         ###   ########.fr       */
+/*   Created: 2019/09/27 16:00:50 by lcarmelo          #+#    #+#             */
+/*   Updated: 2019/09/27 16:00:52 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr(int n)
+void	*ft_memalloc(size_t size)
 {
-	if (n == -2147483648)
-		ft_putstr("-2147483648", 11);
-	else
-	{
-		if (n < 0)
-		{
-			ft_putchar('-');
-			n *= -1;
-		}
-		if (n >= 10)
-			ft_putnbr(n / 10);
-		ft_putchar((n % 10) + '0');
-	}
+	void *s;
+
+	s = NULL;
+	if (!(s = malloc(size)))
+		return (NULL);
+	ft_bzero(s, size);
+	return (s);
 }

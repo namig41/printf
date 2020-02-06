@@ -11,18 +11,21 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
-
-
-int         ft_printf(const char *format, ...)
+void putchars(t_printf *p, char c, int count, t_si f_print)
 {
-    t_printf p;
+    while (f_print && count-- > 0)
+        p->done += ft_putchar(c);
+}
 
-    ft_bzero(&p , sizeof(p));
-    p.format = (char *)format;
-    va_start(p.arg, format);
-    parse_format(&p);
-    va_end(p.arg);
-    return (p.done);
+void print_nbr(t_printf *p, char *s, char *pref)
+{
+    p->width -= FT_MAX(p->precision, p->len);
+    p->width -= ft_strlen(pref);
+    p->precision -= p->len;
+    putchars(p, ' ', !(p->f & F_ZERO) ? p->width : 0, !(p->f & F_MINUS));
+	p->done += ft_putstr(pref, ft_strlen(pref));
+    putchars(p, '0', (p->f & F_ZERO) ? p->width : p->precision, 1);
+	p->done += ft_putstr(s, ft_strlen(s));
+    putchars(p, ' ', p->width, p->f & F_MINUS);
 }
