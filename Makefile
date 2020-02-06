@@ -16,54 +16,36 @@ SRC_DIR = ./src/
 INC_DIR = ./includes/
 LIB_DIR = ./libft/
 
-SRC_NAME = ft_printf \
+FUN_NAME = \
+            ft_printf \
+            handle_numbers \
+            handle_strings \
+            parse \
+            print
 
-MY_FUNCS = \
-        ft_atoi \
-        ft_bzero \
-        ft_isdigit \
-        ft_itoa \
-        ft_putchar \
-        ft_putstr \
-        ft_putnbr \
-        ft_strchr \
-        ft_strchri \
-        ft_strlen \
-        ft_memset \
-		ft_lltoa \
-		ft_uitoa_base \
-		ft_ulltoa_base \
-
-ALL_FUNCS = $(MY_FUNCS)
-
-SRCSLIB = $(addprefix $(LIB_DIR), $(addsuffix .c, $(ALL_FUNCS)))
-
-SRCSPRINTF = $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_NAME)))
-
-OBJLIB = $(addsuffix .o, $(ALL_FUNCS))
-
-OBJPRINTF = $(addsuffix .o, $(SRC_NAME))
-
-ALLOBJS = $(OBJLIB)  $(OBJPRINTF)
+SRC_PRINTF = $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_NAME)))
+OBJ_PRINTF = $(addsuffix .o, $(SRC_NAME))
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIB_DIR)
+CFLAGS = -Wall -Wextra -Werror -I$(INC_DIR)
 
 all: $(NAME)
 
-$(ALLOBJS):
-	$(CC) $(CFLAGS) -c $(SRCSLIB) $(SRCSPRINTF) 
+$(OBJ_PRINTF):
+	$(CC) -c $(CFLAGS) $(SRC_PRINTF)
 
-$(NAME): $(ALLOBJS)
+$(NAME): $(OBJ_PRINTF)
 	ar rc $(NAME) $?
 	ranlib $(NAME)
-	rm -f $(ALLOBJS)
-	gcc ./src/main.c libftprintf.a -I $(LIB_DIR) -I $(INC_DIR)
+	rm -f $(OBJ_PRINTF)
+    make -C $(LIB_DIR)
 
 clean:
-	rm -f $(ALLOBJS)
+	rm -f $(OBJ_PRINTF)
+    make clean -C $(LIB_DIR)
 
 fclean: clean
 	rm -f $(NAME)
+    make fclean -C $(LIB_DIR)
 
 re: fclean all

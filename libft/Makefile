@@ -10,38 +10,60 @@
 #                                                                              #
 # **************************************************************************** #
 		
-MY_FUNCS = \
-        ft_memset \
+FUN_CONVERSION = \
         ft_atoi \
-        ft_bzero \
-        ft_putchar \
-        ft_putstr \
-        ft_strlen \
-        ft_strchr \
-        ft_strchri \
 		ft_lltoa \
 		ft_uitoa_base \
 		ft_ulltoa_base \
 
+FUN_MEMORY = \
+        ft_memset \
+        ft_bzero \
+        ft_memcpy \
+        ft_memccpy \
+        ft_memmove \
+        ft_memchr \
+        ft_memalloc \
+        ft_memdel
 
-ALL_FUNCS = $(MY_FUNCS)
-NAME = libft.a
-SRC = $(addprefix $(SRC_PATH), $(addsuffix .c, $(ALL_FUNCS)))
-OBJS = $(addsuffix .o, $(ALL_FUNCS))
-SRC_PATH = ./
-INCLUDE_PATH = ./
-CFLAGS = -Wall -Wextra -Werror -I$(INCLUDE_PATH)
+FUN_STRINGS = \
+        ft_isprint \
+        ft_isdigit \
+        ft_putchar \
+        ft_putstr \
+        ft_strlen \
+        ft_strchr \
+        ft_strchri 
+
+DIR_CONVERSION  = ./conversion/
+DIR_MEMORY      = ./memory/
+DIR_STRINGS     = ./strings/
+
+SRC_CONVERSION  = $(addprefix $(DIR_CONVERSION), $(addsuffix .c, $(FUN_CONVERSION)))
+SRC_MEMORY      = $(addprefix $(DIR_MEMORY), $(addsuffix .c, $(FUN_MEMORY)))
+SRC_STRINGS     = $(addprefix $(DIR_STRINGS), $(addsuffix .c, $(FUN_STRINGS)))
+
+SRC_ALL         = $(SRC_CONVERSION) $(SRC_MEMORY) $(SRC_STRINGS) 
+OBJ_ALL            = $(addsuffix .o, $(FUN_CONVERSION) $(FUN_MEMORY) $(FUN_STRINGS))
+
+NAME            = libft.a
+CC              = gcc
+INCLUDE_PATH    = ./includes
+CFLAGS          = -Wall -Wextra -Werror -I$(INCLUDE_PATH)
 
 all: $(NAME)
 
-$(OBJS): %.o: %.c
-	gcc -c $(CFLAGS) $^
+$(OBJ_ALL):
+	$(CC) -c $(CFLAGS) $(SRC_ALL) 
 
-$(NAME): $(OBJS)
-	ar rc $(NAME) $?
-	ranlib $(NAME)
+$(NAME): $(OBJ_ALL)
+	@ar rc $(NAME) $?
+	@ranlib $(NAME)
+
 clean:
-	rm -f $(OBJS)
+	@rm -f $(OBJ_ALL)
+
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
+
 re: fclean all
