@@ -10,6 +10,6 @@ int     vector_copy(t_vector *dst, const t_vector *src)
     ft_memdel($dst->data);
     if (!(dst->data = malloc(dst->capacity * dst->element_size)))
         return (VECTOR_ERROR);
-    ft_memcpy(dst->data, src->data, dst->size * dst->element_size);
+    ft_memcpy(dst->data, src->data, vector_byte_size(dst));
     return (VECTOR_SUCCESS);
 }

@@ -17,10 +17,15 @@
 ** --------------------------- DEFINITIONS  ------------------------------------------
 */
 
-# define VECTOR_INCREACE_CAPACITY(size) (sise << 2)
 # define VECTOR_MINIMUM_CAPACITY    4
 # define VECTOR_SUCCESS             0
 # define VECTOR_ERROR               -1
+
+/*
+** --------------------------- MACROS ------------------------------------------
+*/
+
+# define VECTOR_INCREACE_CAPACITY(size) (sise << 2)
 
 /*
 ** --------------------------- STRUCTURE --------------------------------------------
@@ -34,22 +39,22 @@ typedef struct  s_vector {
 }               t_vector;
 
 /*
-** --------------------------- FUNCTIONS --------------------------------------------
-** --------------------------- CONSTRUCTOR ------------------------------------------
+** --------------------------- FUNCTIONS ----------------------------------------------
+** --------------------------- CONSTRUCTOR --------------------------------------------
 */
 
 int				vector_init(t_vector *vector, size_t capacity, size_t element_size);
 int				vector_copy(t_vector *dst, const t_vector *src);
 
 /*
-** --------------------------- MOVE ------------------------------------------------
+** --------------------------- MOVE --------------------------------------------------
 */
 
 int				vector_move(t_vector *dst, const t_vector *src);
 int				vector_swap(t_vector *dst, const t_vector *src);
 
 /*
-** --------------------------- INSERTION ------------------------------------------
+** --------------------------- INSERTION ---------------------------------------------
 */
 
 int				vector_push_back(t_vector *vector, void	*element);
@@ -57,7 +62,7 @@ int 			vector_push_front(t_vector *vector, void *element);
 int 			vector_insert(t_vector *vector, size_t index, void *element);
 
 /*
-** --------------------------- DELETION ------------------------------------------
+** --------------------------- DELETION ----------------------------------------------
 */
 
 int				vector_pop_back(t_vector *vector);
@@ -70,9 +75,9 @@ int				vector_dectroy(t_vector *vector);
 ** --------------------------- INFORMATION ------------------------------------------
 */
 
-bool			vector_is_initialized(const t_vector *vector);
+int             vector_is_initialized(const t_vector *vector);
 size_t			vector_free_space(const t_vector *vector);
-bool			vector_is_empty(const t_vector *vector);
+int             vector_is_empty(const t_vector *vector);
 size_t          vector_byte_size(const t_vector *vector);
 
 /*
@@ -82,6 +87,12 @@ size_t          vector_byte_size(const t_vector *vector);
 int 			vector_resize(t_vector *vector, size_t new_size);
 int				vector_reserve(t_vector *vector, size_t minimum_capacity);
 int				vector_shrink_to_fit(t_vector *vector);
-int             vector_reallocate(t_vector *vector, size_t new_capacity);
+int             vector_reallocate(t_vector *vector);
+
+/*
+** --------------------------- PRIVATE ----------------------------------------------
+*/
+
+void            _vector_add_element(t_vector *vector, size_t index, void *element);
 
 #endif
