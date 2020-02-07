@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*   ft_memswap.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/07 17:12:26 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/07 17:13:16 by lcarmelo         ###   ########.fr       */
+/*   Created: 2020/02/07 16:41:20 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/07 17:13:57 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int     ft_isprint(int c)
+void    ft_memswap(void *a, void *b, size_t size)
 {
-    return (c >= 32 && c <= 126);
+   void *tmp;
+
+   if (!(tmp = ft_memalloc(size)))
+           return ;
+   ft_memmove(tmp, a, size);
+   ft_memmove(a, b, size);
+   ft_memmove(b, tmp, size);
+   ft_memdel(&tmp);
 }

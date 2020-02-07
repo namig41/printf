@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*   vector_pop_front.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/07 17:12:26 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/07 17:13:16 by lcarmelo         ###   ########.fr       */
+/*   Created: 2020/02/07 15:46:57 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/07 17:29:35 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "vector.h"
 
-int     ft_isprint(int c)
+void    *vector_pop_front(t_vector *vector)
 {
-    return (c >= 32 && c <= 126);
+    void *element;
+
+    if (!vector)
+        return (NULL);
+    element = vector->data;
+    _vector_offset(vector, 0, NULL, OFFSET_LEFT); 
+    return (element);
 }
+

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector_init.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/07 17:16:05 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/07 17:30:09 by lcarmelo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vector.h"
 
 int     vector_init(t_vector *vector, size_t capacity, size_t element_size)
@@ -7,8 +19,8 @@ int     vector_init(t_vector *vector, size_t capacity, size_t element_size)
     vector->size = 0;
     vector->capacity = FT_MIN(VECTOR_MINIMUM_CAPACITY, capacity);
     vector->element_size = element_size;
-    if (!(vector->data = malloc(vector->capacity * vector->element_size))
+    if (!(vector->data = malloc(vector->capacity * vector->element_size)))
         return (VECTOR_ERROR);
-    return (VECTOR_SECCESS);
+    return (VECTOR_SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 20:36:34 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/05 19:02:49 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2020/02/07 17:00:13 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void						*ft_memmove(void *dst, const void *src, size_t len);
 void						*ft_memchr(const void *s, int c, size_t n);
 void						*ft_memalloc(size_t size);
 void						ft_memdel(void **ap);
+void                        ft_memswap(void *a, void *b, size_t size);
+void                        ft_swap(void **a, void **b);
 
 /*
 ** --------------------------- STRINGS ---------------------------------------------

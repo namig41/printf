@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*   vector_get_element.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/07 17:12:26 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/07 17:13:16 by lcarmelo         ###   ########.fr       */
+/*   Created: 2020/02/07 15:40:43 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/07 17:28:51 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "vector.h"
 
-int     ft_isprint(int c)
+void    *vector_get_element(t_vector *vector, size_t index)
 {
-    return (c >= 32 && c <= 126);
+    if (!vector || vector->size < index)
+        return (NULL);
+    return (vector->data + (index * vector->element_size));
 }

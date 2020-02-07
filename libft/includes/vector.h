@@ -1,11 +1,12 @@
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   vector.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/23 20:36:34 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/05 19:02:49 by lcarmelo         ###   ########.fr       */
+/*   Created: 2020/02/07 15:23:50 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/07 17:44:53 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +23,22 @@
 # define VECTOR_ERROR               -1
 
 /*
-** --------------------------- MACROS ------------------------------------------
+** --------------------------- ORIENTATION ------------------------------------------
 */
 
-# define VECTOR_INCREACE_CAPACITY(size) (sise << 2)
+# define OFFSET_NO                  0
+# define OFFSET_LEFT                1
+# define OFFSET_RIGHT               2
+
+/*
+** --------------------------- MACROS -----------------------------------------------
+*/
+
+# if VECTOR_SPEED <= 0
+    # define VECTOR_BASE_SPEED      2
+# endif
+
+# define VECTOR_INCREACE_CAPACITY(size, speed) (size << speed)
 
 /*
 ** --------------------------- STRUCTURE --------------------------------------------
@@ -46,15 +59,14 @@ typedef struct  s_vector {
 int				vector_init(t_vector *vector, size_t capacity, size_t element_size);
 int				vector_copy(t_vector *dst, const t_vector *src);
 
-/*
-** --------------------------- MOVE --------------------------------------------------
+/* ** --------------------------- MOVE ---------------------------------------------------
 */
 
-int				vector_move(t_vector *dst, const t_vector *src);
-int				vector_swap(t_vector *dst, const t_vector *src);
+int				vector_move(t_vector *dst, t_vector *src);
+int				vector_swap(t_vector *dst, t_vector *src);
 
 /*
-** --------------------------- INSERTION ---------------------------------------------
+** --------------------------- INSERTION -----------------------------------------------
 */
 
 int				vector_push_back(t_vector *vector, void	*element);
@@ -62,37 +74,39 @@ int 			vector_push_front(t_vector *vector, void *element);
 int 			vector_insert(t_vector *vector, size_t index, void *element);
 
 /*
-** --------------------------- DELETION ----------------------------------------------
+** --------------------------- GET ELEMENT ----------------------------------------------
 */
 
-int				vector_pop_back(t_vector *vector);
-int				vector_pop_front(t_vector *vector);
-int				vector_erase(t_vector *vector, size_t index);
-int				vector_clear(t_vector *vector);
-int				vector_dectroy(t_vector *vector);
+void            *vector_get_element(t_vector *element, size_t index);
 
 /*
-** --------------------------- INFORMATION ------------------------------------------
+** --------------------------- DELETION ------------------------------------------------
 */
 
-int             vector_is_initialized(const t_vector *vector);
-size_t			vector_free_space(const t_vector *vector);
+void            *vector_pop_back(t_vector *vector);
+void			*vector_pop_front(t_vector *vector);
+int				vector_erase(t_vector *vector, size_t index);
+int				vector_clear(t_vector *vector);
+int				vector_destroy(t_vector *vector);
+
+/*
+** --------------------------- INFORMATION ---------------------------------------------
+*/
+
 int             vector_is_empty(const t_vector *vector);
 size_t          vector_byte_size(const t_vector *vector);
 
 /*
-** --------------------------- MEMORY ----------------------------------------------
+** --------------------------- MEMORY --------------------------------------------------
 */
 
 int 			vector_resize(t_vector *vector, size_t new_size);
-int				vector_reserve(t_vector *vector, size_t minimum_capacity);
-int				vector_shrink_to_fit(t_vector *vector);
 int             vector_reallocate(t_vector *vector);
 
 /*
-** --------------------------- PRIVATE ----------------------------------------------
+** --------------------------- PRIVATE -------------------------------------------------
 */
 
-void            _vector_add_element(t_vector *vector, size_t index, void *element);
+void            _vector_offset(t_vector *vector, size_t index, void *element, t_uc offset_flag);
 
 #endif

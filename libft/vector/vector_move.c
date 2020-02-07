@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector_move.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/07 14:37:52 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/07 17:21:34 by lcarmelo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vector.h"
 
-int vector_move(t_vector *dst, const t_vector *src)
+int vector_move(t_vector *dst, t_vector *src)
 {
     if (vector_destroy(dst) == VECTOR_ERROR || !src)
         return (VECTOR_ERROR);

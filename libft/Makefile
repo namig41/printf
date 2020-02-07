@@ -6,7 +6,7 @@
 #    By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 15:54:57 by lcarmelo          #+#    #+#              #
-#    Updated: 2020/02/05 15:00:42 by lcarmelo         ###   ########.fr        #
+#    Updated: 2020/02/07 18:08:37 by lcarmelo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 		
@@ -24,7 +24,9 @@ FUN_MEMORY = \
         ft_memmove \
         ft_memchr \
         ft_memalloc \
-        ft_memdel
+        ft_memdel \
+		ft_memswap \
+		ft_swap
 
 FUN_STRINGS = \
         ft_isprint \
@@ -35,21 +37,42 @@ FUN_STRINGS = \
         ft_strchr \
         ft_strchri 
 
+FUN_VECTOR = \
+		vector_init \
+		vector_copy \
+		vector_move \
+		vector_push_back \
+		vector_push_front \
+		vector_insert \
+		vector_get_element \
+		vector_pop_back \
+		vector_pop_front \
+		vector_erase \
+		vector_clear \
+		vector_destroy \
+		vector_is_empty \
+		vector_byte_size \
+		vector_resize \
+		vector_reallocate \
+		vector_offset 
+
 DIR_CONVERSION  = ./conversion/
 DIR_MEMORY      = ./memory/
 DIR_STRINGS     = ./strings/
+DIR_VECTOR 		= ./vector/
+DIR_INC   		= ./includes
 
 SRC_CONVERSION  = $(addprefix $(DIR_CONVERSION), $(addsuffix .c, $(FUN_CONVERSION)))
 SRC_MEMORY      = $(addprefix $(DIR_MEMORY), $(addsuffix .c, $(FUN_MEMORY)))
 SRC_STRINGS     = $(addprefix $(DIR_STRINGS), $(addsuffix .c, $(FUN_STRINGS)))
+SRC_VECTOR 		= $(addprefix $(DIR_VECTOR), $(addsuffix .c, $(FUN_VECTOR)))
 
-SRC_ALL         = $(SRC_CONVERSION) $(SRC_MEMORY) $(SRC_STRINGS) 
-OBJ_ALL            = $(addsuffix .o, $(FUN_CONVERSION) $(FUN_MEMORY) $(FUN_STRINGS))
+SRC_ALL         = $(SRC_CONVERSION) $(SRC_MEMORY) $(SRC_STRINGS) $(SRC_VECTOR)
+OBJ_ALL         = $(addsuffix .o, $(FUN_CONVERSION) $(FUN_MEMORY) $(FUN_STRINGS) $(FUN_VECTOR))
 
 NAME            = libft.a
 CC              = gcc
-INCLUDE_PATH    = ./includes
-CFLAGS          = -Wall -Wextra -Werror -I$(INCLUDE_PATH)
+CFLAGS          = -Wall -Wextra -Werror -I$(DIR_INC)
 
 all: $(NAME)
 

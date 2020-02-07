@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*   vector_pop_back.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/07 17:12:26 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/07 17:13:16 by lcarmelo         ###   ########.fr       */
+/*   Created: 2020/02/07 15:33:11 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/07 17:34:30 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "vector.h"
 
-int     ft_isprint(int c)
+void        *vector_pop_back(t_vector *vector)
 {
-    return (c >= 32 && c <= 126);
+    if (!vector)
+        return (NULL);
+    return (vector_get_element(vector, vector->size--));
 }
+
