@@ -22,9 +22,9 @@ static int			check_overflow(int sign)
 
 int					ft_atoi(const char *str)
 {
-	long long			max;
-	long long			prev;
-	int					sign;
+	t_ll 				max;
+	t_ll 				prev;
+	int				sign;
 
 	sign = 1;
 	max = 0;

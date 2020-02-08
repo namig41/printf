@@ -7,6 +7,7 @@ int main(void)
 	//printf("%05x\n", 12);
     //ft_printf("%05p\n", m);
 
-    ft_printf("%hd", 32768);
+    ft_printf("%#+.x\n", 0);
+    printf("%#.x\n", 0);
 	return (0);
 }

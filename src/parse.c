@@ -15,19 +15,19 @@
 
 void     parse_modifers(t_printf *p)
 {
-    while (1)
-    {
-       if (*p->format == 'h')
-            p->m |= (1 << (p->format[1] == 'h' && p->format++));
-        else if (*p->format == 'l')
-            p->m |= (1 << (2 + (p->format[1] == 'l' && p->format++)));
-        else
-            return ;
-        p->format++;
-    }
+	while (1)
+	{
+		if (*p->format == 'h')
+		    p->m |= (1 << (p->format[1] == 'h' && p->format++));
+		else if (*p->format == 'l')
+		    p->m |= (1 << (2 + (p->format[1] == 'l' && p->format++)));
+		else
+			return ;
+		p->format++;
+	}
 }
 
-void        parse_point(t_printf *p)
+inline void        parse_point(t_printf *p)
 {
 	if (ft_isdigit(*p->format))
 	{
@@ -41,7 +41,7 @@ void        parse_point(t_printf *p)
 		p->precision = ft_atoi(p->format);
 		while (ft_isdigit(*p->format))
 			++p->format;
-		p->f |= F_PRECI;
+		p->f |= (!p->precision) ? F_PRECI : 0;
 		p->f &= ~F_ZERO;
 	}
     p->f &= (!p->precision && p->f & F_MINUS) ? (~F_ZERO) : 0xFFFF;
@@ -52,7 +52,9 @@ void        parse_flags(t_printf *p)
     int  n;
 
     while (((n = ft_strchri(FLAGS, *p->format)) > -1) && p->format++)
+    {
         p->f |= (1 << n);
+    }
 	p->f &= (p->f & F_PLUS) ? (~F_SPACE) : 0xFFFF;
 	if (p->f & F_WILDCARD && (p->width = va_arg(p->arg, int) < 0))
     {

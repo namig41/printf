@@ -27,7 +27,9 @@ size_t	ft_strlen(const char *str)
 	const unsigned long	*lp;
 
     if (!str)
+    {
         return (0);
+    }
 	lp = (const unsigned long *)((uintptr_t)str & ~(sizeof(long) - 1));
 	if ((*lp - g_mask01) & ((~*lp) & g_mask80))
 	{

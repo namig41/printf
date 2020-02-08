@@ -68,6 +68,7 @@ int                         ft_isprint(int c);
 
 int							ft_atoi(const char *str);
 char						*ft_itoa(int n);
+char 						*ft_lltoa(t_ll n);
 char						*ft_uitoa_base(t_ui value, int base, char reg);
 char						*ft_ulltoa_base(t_ull value, int base, char reg);
 #endif
