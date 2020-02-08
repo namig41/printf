@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -7,7 +6,7 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/05 19:22:28 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2020/02/08 19:04:56 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +14,7 @@
 
 void     parse_modifers(t_printf *p)
 {
-	while (1)
+	while (ft_strchr(MODIFIERS, *p->format))
 	{
 		if (*p->format == 'h')
 		    p->m |= (1 << (p->format[1] == 'h' && p->format++));
@@ -52,9 +51,7 @@ void        parse_flags(t_printf *p)
     int  n;
 
     while (((n = ft_strchri(FLAGS, *p->format)) > -1) && p->format++)
-    {
         p->f |= (1 << n);
-    }
 	p->f &= (p->f & F_PLUS) ? (~F_SPACE) : 0xFFFF;
 	if (p->f & F_WILDCARD && (p->width = va_arg(p->arg, int) < 0))
     {
@@ -78,8 +75,6 @@ void        search_specifier(t_printf *p)
         handle_char(p);
     else if (ft_strchr(S_STR, p->c))
         handle_str(p);
-    else if (ft_strchr(PERCENT, p->c))
-        print_nbr(p, 0, "%");
     // else if (ft_strchr(S_FLOAT, p->c))
     //    //     handle_float(p);
     else

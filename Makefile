@@ -6,7 +6,7 @@
 #    By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 15:54:57 by lcarmelo          #+#    #+#              #
-#    Updated: 2020/02/07 18:36:11 by lcarmelo         ###   ########.fr        #
+#    Updated: 2020/02/08 18:48:06 by lcarmelo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,8 @@ SRC_PRINTF 	= $(addprefix $(DIR_SRC), $(addsuffix .c, $(FUN_NAME)))
 OBJ_PRINTF 	= $(addsuffix .o, $(FUN_NAME))
 
 NAME 		= libftprintf.a
-CC 	   	= gcc
-CFLAGS 	   	= -Wall -Wextra -Werror -O2 -I$(DIR_INC) -I$(DIR_LIB)$(DIR_INC)
+CC 	   		= gcc
+CFLAGS 	   	=  -O2 -I$(DIR_INC) -I$(DIR_LIB)$(DIR_INC)
 
 all: $(NAME)
 
@@ -47,7 +47,7 @@ fclean: clean
 
 re: fclean all
 
-compile: all clean
+compile: fclean all clean
 	@$(CC) $(CFLAGS) src/main.c $(NAME)	
 
 .PHONY: all clean fclean re compile

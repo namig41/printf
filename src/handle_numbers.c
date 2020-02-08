@@ -6,12 +6,13 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/05 19:22:28 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2020/02/08 19:04:55 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
+#include <stdio.h>
 void handle_int(t_printf *p)
 {
     char *str_int;
@@ -82,7 +83,7 @@ void handle_oct(t_printf *p)
 	else
 		str_oct = ft_ulltoa_base(va_arg(p->arg, t_ui), BASE_8, p->c);
 	p->len = ft_strlen(str_oct);
-    pref = (p->f & F_SHARP && *str_oct != '0') ? "0" : 0;
+    pref = (p->f & F_SHARP) ? "0" : 0;
     print_nbr(p, str_oct, pref);
 	free(str_oct);
 }

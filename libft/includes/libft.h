@@ -6,7 +6,7 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 20:36:34 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/07 17:00:13 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2020/02/08 17:21:26 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 # define FT_MAX(a, b)		a - ((a - b) & ((a - b) >> 31))
 # define FT_MIN(a, b)		b + ((a - b) & ((a - b) >> 31))
+# define FT_SIGN(a)         (a < 0) ? -1 : (a > 0) 
 # define FT_ABS(a)			(a < 0) ? -a : a
 
 typedef unsigned char		t_uc;

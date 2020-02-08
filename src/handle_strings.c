@@ -6,7 +6,7 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/05 19:22:28 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2020/02/08 19:04:58 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void handle_char(t_printf *p)
 {
 	putchars(p, ' ', p->width - 1, !(p->f & F_MINUS));
-	p->done += ft_putchar((t_uc)va_arg(p->arg, int));
+	p->done += ft_putchar(p->c != '%' ? (t_uc)va_arg(p->arg, int) : p->c);
 	putchars(p, ' ', p->width - 1, p->f & F_MINUS);
 }
 

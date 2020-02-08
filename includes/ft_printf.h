@@ -6,7 +6,7 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:34 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/05 19:22:38 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2020/02/08 17:15:26 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@
 # define F_UPCASE	(1 << 7)
 
 /*
-** --------------------------- MODIFERS MASKS ------------------------------------------
+** --------------------------- MODIFIERS MASKS ------------------------------------------
 */
 
-# define MODIFERS	"hl"
+# define MODIFIERS	"hl"
 # define M_SHORT	(1 << 0)
 # define M_SHORT_2	(1 << 1)
 # define M_LONG		(1 << 2)
@@ -47,9 +47,8 @@
 # define S_HEX		"xXp"
 # define S_OCT		"oO"
 # define S_FLOAT	"fF"
-# define S_CHAR		"cC"
+# define S_CHAR		"cC%"
 # define S_STR 		"sS"
-# define PERCENT	"%"
 
 /*
 ** --------------------------- NUMBER SYSTEM ------------------------------------------
@@ -75,7 +74,7 @@ typedef struct	s_printf
 	t_si		f;
 	t_uc		c;
 	t_ui		len;
-	t_ui		width;
+	t_l    		width;
 	t_l			precision;
 	char		*format;
 	va_list 	arg;
