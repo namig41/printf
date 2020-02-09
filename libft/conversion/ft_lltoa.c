@@ -30,7 +30,6 @@ char    *ft_lltoa(t_ll n)
     while (--size_str >= 0)
     {
         str[size_str] = n2 % 10 + '0';
-		printf("%c", str[size_str]);
         n2 /= 10;
     }
     str[0] = (n < 0) ? '-' : str[0];
