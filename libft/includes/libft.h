@@ -19,10 +19,10 @@
 ** --------------------------- MACROS ------------------------------------------
 */
 
-# define FT_MAX(a, b)		a - ((a - b) & ((a - b) >> 31))
-# define FT_MIN(a, b)		b + ((a - b) & ((a - b) >> 31))
+# define FT_MAX(a, b)		(b & ((a - b) >> 31)) | (a & (~(a - b) >> 31))
+# define FT_MIN(a, b)		(a & ((a - b) >> 31))| (b & (~(a - b) >> 31))
+# define FT_ABS(a)			(a ^ (a >> 31)) - (a >> 31)
 # define FT_SIGN(a)         (a < 0) ? -1 : (a > 0) 
-# define FT_ABS(a)			(a < 0) ? -a : a
 
 typedef unsigned char		t_uc;
 typedef const unsigned char	t_cuc;
@@ -56,8 +56,8 @@ void                        ft_swap(void **a, void **b);
 */
 
 size_t						ft_strlen(const char *s);
+size_t 						ft_putstr(char const *s, size_t width);
 int							ft_putchar(char c);
-int							ft_putstr(char const *s, int width);
 char						*ft_strchr(const char *str, int ch);
 int							ft_strchri(const char *str, int ch);
 int							ft_isdigit(int c);

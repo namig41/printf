@@ -16,8 +16,7 @@ int vector_push_front(t_vector *vector, void *element)
 {
    if (!vector || !element) 
         return (VECTOR_ERROR);
-   if (vector->size == vector->capacity &&
-        vector_reallocate(vector) == VECTOR_ERROR)
+   if (vector->size == vector->capacity && !vector_reallocate(vector))
        return (VECTOR_ERROR);
    _vector_offset(vector, 0, element, OFFSET_RIGHT);
    vector->size++;

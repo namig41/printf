@@ -20,9 +20,11 @@ int         ft_printf(const char *format, ...)
     t_printf p;
 
     ft_bzero(&p , sizeof(p));
-    p.format = (char *)format;
+	vector_init(&p.buffer, BUF_SIZE, sizeof(char));
     va_start(p.arg, format);
+    p.format = (char *)format;
     parse_format(&p);
+	vector_destroy(&p.buffer);
     va_end(p.arg);
-    return (p.done);
+    return (p.buffer.size);
 }

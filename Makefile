@@ -15,6 +15,7 @@ FUN_NAME = \
 	handle_numbers \
 	handle_strings \
 	parse \
+	buffer \
 	print
 
 DIR_SRC		= ./src/
@@ -26,7 +27,8 @@ OBJ_PRINTF 	= $(addsuffix .o, $(FUN_NAME))
 
 NAME 		= libftprintf.a
 CC 	   		= gcc
-CFLAGS 	   	=  -O2 -I$(DIR_INC) -I$(DIR_LIB)$(DIR_INC)
+# CFLAGS 	   	= -Wall -Werror -Wextra -O2 -I$(DIR_INC) -I$(DIR_LIB)$(DIR_INC)
+CFLAGS 	   	= -O2 -I$(DIR_INC) -I$(DIR_LIB)$(DIR_INC)
 
 all: $(NAME)
 

@@ -14,6 +14,7 @@
 # define __FT_PRINTF__
 # include <stdarg.h>
 # include "libft.h"
+# include "vector.h"
 
 /*
 ** --------------------------- FLAGS MASKS ---------------------------------------------
@@ -62,7 +63,9 @@
 ** --------------------------- OTHER ------------------------------------------
 */
 
-# define STR_NULL "(null)"
+# define STR_NULL 	"(null)"
+# define BUF_SIZE 	16 
+# define SAVE 		1		
 
 /*
 ** --------------------------- STRUCTURE ------------------------------------------
@@ -71,14 +74,14 @@
 typedef struct	s_printf
 {
 	t_uc		m;
-	t_si		f;
+	t_uc		f;
 	t_uc		c;
 	t_ui		len;
 	t_l    		width;
 	t_l			precision;
 	char		*format;
+	t_vector 	buffer;
 	va_list 	arg;
-	t_l			done;
 }				t_printf;
 
 /*
@@ -88,13 +91,13 @@ typedef struct	s_printf
 int				ft_printf(const char *format, ...);
 
 /*
-** --------------------------- PARSE FORMAT --------------------------------------
+** --------------------------- PARSE FORMAT ---------------------------------------
 */
 
 void			parse_format(t_printf *);
 void			parse_flags(t_printf *p);
 void			parse_point(t_printf *p);
-void     		parse_modifers(t_printf *p);
+void     		parse_modifiers(t_printf *p);
 void			handle_specifier(t_printf *p);
 void			search_specifier(t_printf *p);
 
@@ -115,10 +118,16 @@ void			handle_char(t_printf *p);
 void			handle_str(t_printf *p);
 
 /*
-** --------------------------- PRINT --------------------------------------
+** --------------------------- BUFFER -----------------------------------------------
 */
 
-void			putchars(t_printf *p, char c, int count, t_si f_print);
-void			print_nbr(t_printf *p, char *s, char *pref);
+void			buffer_set(t_printf *p, char c, int count, t_uc f_print);
+void			buffer_push_array(t_printf *p, const char *s, size_t width);
+
+/*
+** --------------------------- PRINT -------------------------------------------------
+*/
+
+void 			print_nbr(t_printf *p, char *s, char *pref);
 
 #endif

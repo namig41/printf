@@ -1,24 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_push_back.c                                 :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/07 14:38:06 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/07 16:01:30 by lcarmelo         ###   ########.fr       */
+/*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/08 19:05:00 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector.h"
+#include "ft_printf.h"
 
-int vector_push_back(t_vector *vector, void *element)
+void 		buffer_set(t_printf *p, char c, int count, t_uc f_save)
 {
-    if (!vector || !element)
-        return (VECTOR_ERROR);
-    if (vector->size == vector->capacity && !vector_reallocate(vector))
-    	return (VECTOR_ERROR); 
-    _vector_offset(vector, vector->size, element, OFFSET_NO);
-    vector->size++;
-    return (VECTOR_SUCCESS);
+    while (f_save && count-- > 0 && vector_push_back(&p->buffer, &c))
+		;
+}
+
+void 		buffer_push_array(t_printf *p, const char *s, size_t width)
+{
+	size_t  i;
+	size_t  len;
+
+	if (s)
+	{
+		i = 0;
+		len = ft_strlen(s);
+		width = FT_MIN(len, width);
+		while (i < width && vector_push_back(&p->buffer, (char *)s + i++))
+			;
+	}
 }

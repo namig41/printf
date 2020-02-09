@@ -16,16 +16,16 @@ char    *ft_lltoa(long long n)
 {
     int     size_str;
     char    *str;
-    unsigned long long n2;
+    t_ll 	 n2;
 
-    n2 = (n < 0) ? (unsigned long long)-n : (unsigned long long)n;
+    n2 = (n < 0) ? (t_ull)-n : (t_ll)n;
     size_str = (n < 0) ? 2 : 1;
     while ((n2 /= 10))
         size_str++;
     if (!(str = (char*)malloc(sizeof(*str) * (size_str + 1))))
         return (0);
     str[size_str] = '\0';
-    n2 = (n < 0) ? (unsigned long long)-n : (unsigned long long)n;
+    n2 = (n < 0) ? (t_ll)-n : (t_ll)n;
     while (--size_str >= 0)
     {
         str[size_str] = n2 % 10 + '0';

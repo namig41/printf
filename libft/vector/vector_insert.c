@@ -14,10 +14,9 @@
 
 int vector_insert(t_vector *vector, size_t index, void *element)
 {
-    if (!vector || !element || vector->size < index)
+    if ((!vector && vector->size < index) || !element)
         return (VECTOR_ERROR);
-    if (vector->size == vector->capacity &&
-        vector_reallocate(vector) == VECTOR_ERROR)
+    if (vector->size == vector->capacity && !vector_reallocate(vector))
         return (VECTOR_ERROR);
     _vector_offset(vector, index, element, OFFSET_RIGHT);
     vector->size++;

@@ -20,6 +20,7 @@ void    *vector_pop_front(t_vector *vector)
         return (NULL);
     element = vector->data;
     _vector_offset(vector, 0, NULL, OFFSET_LEFT); 
+	vector->size--;
     return (element);
 }
 

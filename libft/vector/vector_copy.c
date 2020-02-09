@@ -17,7 +17,7 @@ int     vector_copy(t_vector *dst, const t_vector *src)
     if (!dst || !src)
         return (VECTOR_ERROR);
     dst->size = src->size;
-    dst->capacity = VECTOR_INCREACE_CAPACITY(src->size, VECTOR_BASE_SPEED);
+    dst->capacity = src->capacity;
     dst->element_size = src->element_size;
     ft_memdel(&dst->data);
     if (!(dst->data = malloc(dst->capacity * dst->element_size)))

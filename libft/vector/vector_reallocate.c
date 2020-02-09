@@ -18,11 +18,12 @@ int vector_reallocate(t_vector *vector)
 
     if (!vector)
         return (VECTOR_ERROR);
-    if (vector_init(&old, VECTOR_INCREACE_CAPACITY(vector->capacity, VECTOR_BASE_SPEED), vector->element_size) == VECTOR_ERROR)
+    if (!vector_init(&old, VECTOR_INC_CAPACITY(vector->capacity, VECTOR_SPEED), vector->element_size))
         return (VECTOR_ERROR);
-    if (vector_copy(&old, vector) == VECTOR_ERROR)
-        return (VECTOR_ERROR);
-    if (vector_move(vector, &old) == VECTOR_ERROR)
+	old.size = vector->size;
+	old.element_size = vector->element_size;
+	ft_memcpy(old.data, vector->data, vector_byte_size(vector));
+    if (!vector_move(vector, &old))
         return (VECTOR_ERROR);
     return (VECTOR_SUCCESS);
 }

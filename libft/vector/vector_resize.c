@@ -18,8 +18,10 @@ int vector_resize(t_vector *vector, size_t new_size)
         return (VECTOR_ERROR);
     if (vector->size < new_size && vector->capacity < new_size)
     {
+        vector->size = new_size;
         vector->capacity = new_size;
-        vector_reallocate(vector);
+        if (!vector_reallocate(vector))
+			return (VECTOR_ERROR);
     }
     if (vector->size > new_size)
         vector->size = new_size;

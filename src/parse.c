@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-void     parse_modifers(t_printf *p)
+void     parse_modifiers(t_printf *p)
 {
 	while (ft_strchr(MODIFIERS, *p->format))
 	{
@@ -88,7 +88,7 @@ void            handle_specifier(t_printf *p)
     p->width = 0;
     p->precision = 0;
     parse_flags(p);
-    parse_modifers(p);
+    parse_modifiers(p);
     parse_flags(p);
     parse_point(p);
     search_specifier(p);
@@ -105,7 +105,8 @@ void            parse_format(t_printf *p)
 				handle_specifier(p);
         }
         else
-            p->done += ft_putchar(*p->format);
+        	buffer_set(p, *p->format, 1, SAVE);
         p->format++;
     }
+	write(1, (char *)p->buffer.data, p->buffer.size);
 }

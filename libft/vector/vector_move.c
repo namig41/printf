@@ -14,7 +14,7 @@
 
 int vector_move(t_vector *dst, t_vector *src)
 {
-    if (vector_destroy(dst) == VECTOR_ERROR || !src)
+    if (!src || !vector_destroy(dst))
         return (VECTOR_ERROR);
     *dst = *src;
     src->data = 0;

@@ -13,17 +13,18 @@
 #ifndef __VECTOR_H__
 # define __VECTOR_H__
 # include "libft.h"
+# include <stdio.h>
 
 /*
 ** --------------------------- DEFINITIONS  ------------------------------------------
 */
 
-# define VECTOR_MINIMUM_CAPACITY    4
-# define VECTOR_SUCCESS             0
-# define VECTOR_ERROR               -1
+# define VECTOR_MIN_CAPACITY        4
+# define VECTOR_SUCCESS             1
+# define VECTOR_ERROR               0
 
 /*
-** --------------------------- ORIENTATION ------------------------------------------
+** --------------------------- ORIENTATION OFFSET ------------------------------------
 */
 
 # define OFFSET_NO                  0
@@ -35,10 +36,10 @@
 */
 
 # if VECTOR_SPEED <= 0
-    # define VECTOR_BASE_SPEED      2
+    # define VECTOR_SPEED 	    2
 # endif
 
-# define VECTOR_INCREACE_CAPACITY(size, speed) (size << speed)
+# define VECTOR_INC_CAPACITY(size, speed) (size << speed)
 
 /*
 ** --------------------------- STRUCTURE --------------------------------------------
