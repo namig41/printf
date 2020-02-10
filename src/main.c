@@ -4,6 +4,6 @@
 
 int main(void)
 {
-	ft_printf("%lld", -9223372036854775808);
+	ft_printf("%#o", 0);
 	return (0);
 }

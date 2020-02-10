@@ -6,7 +6,7 @@
 #    By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 15:54:57 by lcarmelo          #+#    #+#              #
-#    Updated: 2020/02/07 18:08:37 by lcarmelo         ###   ########.fr        #
+#    Updated: 2020/02/10 17:52:29 by lcarmelo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 		
@@ -70,10 +70,9 @@ SRC_VECTOR 		= $(addprefix $(DIR_VECTOR), $(addsuffix .c, $(FUN_VECTOR)))
 SRC_ALL         = $(SRC_CONVERSION) $(SRC_MEMORY) $(SRC_STRINGS) $(SRC_VECTOR)
 OBJ_ALL         = $(addsuffix .o, $(FUN_CONVERSION) $(FUN_MEMORY) $(FUN_STRINGS) $(FUN_VECTOR))
 
-NAME            = libft.a
 CC              = gcc
-# CFLAGS          = -Wall -Wextra -Werror -O2 -I$(DIR_INC)
-CFLAGS          = -O2 -I$(DIR_INC)
+NAME            = libft.a
+CFLAGS          = -Wall -Wextra -Werror -O2 -I$(DIR_INC)
 
 all: $(NAME)
 

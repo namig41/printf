@@ -6,7 +6,7 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:34 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/08 17:15:26 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2020/02/10 17:20:44 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@
 ** --------------------------- MODIFIERS MASKS ------------------------------------------
 */
 
-# define MODIFIERS	"hl"
+# define MODIFIERS	"hljz"
 # define M_SHORT	(1 << 0)
 # define M_SHORT_2	(1 << 1)
 # define M_LONG		(1 << 2)
 # define M_LONG_2	(1 << 3)
+
 /*
 ** --------------------------- ALL SPECIFIER ------------------------------------------
 */
@@ -60,7 +61,7 @@
 # define BASE_8		8
 
 /*
-** --------------------------- OTHER ------------------------------------------
+** --------------------------- OTHER --------------------------------------------------
 */
 
 # define STR_NULL 	"(null)"
@@ -68,7 +69,7 @@
 # define SAVE 		1		
 
 /*
-** --------------------------- STRUCTURE ------------------------------------------
+** --------------------------- STRUCTURE -----------------------------------------------
 */
 
 typedef struct	s_printf
@@ -85,24 +86,24 @@ typedef struct	s_printf
 }				t_printf;
 
 /*
-** --------------------------- FUNCTIONS ------------------------------------------
+** --------------------------- FUNCTIONS -----------------------------------------------
 */
 
 int				ft_printf(const char *format, ...);
 
 /*
-** --------------------------- PARSE FORMAT ---------------------------------------
+** --------------------------- PARSE FORMAT --------------------------------------------
 */
 
 void			parse_format(t_printf *);
 void			parse_flags(t_printf *p);
 void			parse_point(t_printf *p);
 void     		parse_modifiers(t_printf *p);
+void			parse_specifier(t_printf *p);
 void			handle_specifier(t_printf *p);
-void			search_specifier(t_printf *p);
 
 /*
-** --------------------------- HANDLE NUMBERS --------------------------------------
+** --------------------------- HANDLE NUMBERS ------------------------------------------
 */
 
 void			handle_int(t_printf *p);
@@ -111,23 +112,18 @@ void			handle_hex(t_printf *p);
 void			handle_oct(t_printf *p);
 
 /*
-** --------------------------- HANDLE STRINGS --------------------------------------
+** --------------------------- PRINT ----------------------------------------------------
 */
 
-void			handle_char(t_printf *p);
-void			handle_str(t_printf *p);
+void 			print_nbr(t_printf *p, char *s, char *pref);
+void			print_char(t_printf *p);
+void			print_str(t_printf *p);
 
 /*
-** --------------------------- BUFFER -----------------------------------------------
+** --------------------------- BUFFER --------------------------------------------------
 */
 
 void			buffer_set(t_printf *p, char c, int count, t_uc f_print);
 void			buffer_push_array(t_printf *p, const char *s, size_t width);
-
-/*
-** --------------------------- PRINT -------------------------------------------------
-*/
-
-void 			print_nbr(t_printf *p, char *s, char *pref);
 
 #endif

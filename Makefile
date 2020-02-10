@@ -6,14 +6,13 @@
 #    By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 15:54:57 by lcarmelo          #+#    #+#              #
-#    Updated: 2020/02/08 18:48:06 by lcarmelo         ###   ########.fr        #
+#    Updated: 2020/02/10 17:52:10 by lcarmelo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 FUN_NAME = \
 	ft_printf \
 	handle_numbers \
-	handle_strings \
 	parse \
 	buffer \
 	print
@@ -25,10 +24,9 @@ DIR_LIB		= ./libft/
 SRC_PRINTF 	= $(addprefix $(DIR_SRC), $(addsuffix .c, $(FUN_NAME)))
 OBJ_PRINTF 	= $(addsuffix .o, $(FUN_NAME))
 
-NAME 		= libftprintf.a
 CC 	   		= gcc
-# CFLAGS 	   	= -Wall -Werror -Wextra -O2 -I$(DIR_INC) -I$(DIR_LIB)$(DIR_INC)
-CFLAGS 	   	= -O2 -I$(DIR_INC) -I$(DIR_LIB)$(DIR_INC)
+NAME 		= libftprintf.a
+CFLAGS 	   	= -Wall -Werror -Wextra -O2 -I$(DIR_INC) -I$(DIR_LIB)$(DIR_INC)
 
 all: $(NAME)
 
@@ -49,7 +47,7 @@ fclean: clean
 
 re: fclean all
 
-compile: fclean all clean
+compile: re clean
 	@$(CC) $(CFLAGS) src/main.c $(NAME)	
 
 .PHONY: all clean fclean re compile
