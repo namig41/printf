@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 20:10:04 by fpythago         ###   ########.fr       */
+/*   Created: 2019/09/27 16:06:23 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/11 19:03:58 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include <stdio.h>
+#include "libft.h"
 
-int		ft_printf(const char *format, ...)
+char	*ft_strchr(const char *str, int ch)
 {
-	t_printf p;
-
-	ft_bzero(&p, sizeof(p));
-	vector_init(&p.buffer, BUF_SIZE, sizeof(char));
-	va_start(p.arg, format);
-	p.format = (char *)format;
-	parse_format(&p);
-	vector_destroy(&p.buffer);
-	va_end(p.arg);
-	return (p.buffer.size);
+	while (1)
+	{
+		if (!str || !*str)
+			return (NULL);
+		if (*str == ch)
+			return ((char *)str);
+		str++;
+	}
 }

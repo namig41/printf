@@ -1,28 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 20:10:04 by fpythago         ###   ########.fr       */
+/*   Created: 2019/09/27 16:02:30 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/11 18:57:31 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include <stdio.h>
+#include "libft.h"
 
-int		ft_printf(const char *format, ...)
+void		*ft_memmove(void *dst, const void *src, size_t len)
 {
-	t_printf p;
+	t_uc	*d;
+	t_cuc	*s;
 
-	ft_bzero(&p, sizeof(p));
-	vector_init(&p.buffer, BUF_SIZE, sizeof(char));
-	va_start(p.arg, format);
-	p.format = (char *)format;
-	parse_format(&p);
-	vector_destroy(&p.buffer);
-	va_end(p.arg);
-	return (p.buffer.size);
+	if (!dst && !src)
+		return (NULL);
+	d = dst;
+	s = src;
+	if (d < s)
+		while (len--)
+			*d++ = *s++;
+	else
+	{
+		s = s + len - 1;
+		d = d + len - 1;
+		while (len--)
+			*d-- = *s--;
+	}
+	return (dst);
 }

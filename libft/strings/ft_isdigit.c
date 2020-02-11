@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 20:10:04 by fpythago         ###   ########.fr       */
+/*   Created: 2019/09/27 15:58:14 by lcarmelo          #+#    #+#             */
+/*   Updated: 2019/09/27 15:58:20 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include <stdio.h>
-
-int		ft_printf(const char *format, ...)
+int	ft_isdigit(int c)
 {
-	t_printf p;
-
-	ft_bzero(&p, sizeof(p));
-	vector_init(&p.buffer, BUF_SIZE, sizeof(char));
-	va_start(p.arg, format);
-	p.format = (char *)format;
-	parse_format(&p);
-	vector_destroy(&p.buffer);
-	va_end(p.arg);
-	return (p.buffer.size);
+	if (c < '0' || c > '9')
+		return (0);
+	return (1);
 }

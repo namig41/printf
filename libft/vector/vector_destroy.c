@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   vector_destroy.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 20:10:04 by fpythago         ###   ########.fr       */
+/*   Created: 2020/02/07 14:37:29 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/11 19:14:34 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include <stdio.h>
+#include "vector.h"
 
-int		ft_printf(const char *format, ...)
+int	vector_destroy(t_vector *vector)
 {
-	t_printf p;
-
-	ft_bzero(&p, sizeof(p));
-	vector_init(&p.buffer, BUF_SIZE, sizeof(char));
-	va_start(p.arg, format);
-	p.format = (char *)format;
-	parse_format(&p);
-	vector_destroy(&p.buffer);
-	va_end(p.arg);
-	return (p.buffer.size);
+	if (!vector)
+		return (VECTOR_ERROR);
+	ft_memdel(&vector->data);
+	return (VECTOR_SUCCESS);
 }

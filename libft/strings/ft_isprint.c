@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 20:10:04 by fpythago         ###   ########.fr       */
+/*   Created: 2020/02/07 17:12:26 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/11 19:03:38 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include <stdio.h>
+#include "libft.h"
 
-int		ft_printf(const char *format, ...)
+int		ft_isprint(int c)
 {
-	t_printf p;
-
-	ft_bzero(&p, sizeof(p));
-	vector_init(&p.buffer, BUF_SIZE, sizeof(char));
-	va_start(p.arg, format);
-	p.format = (char *)format;
-	parse_format(&p);
-	vector_destroy(&p.buffer);
-	va_end(p.arg);
-	return (p.buffer.size);
+	return (c >= 32 && c <= 126);
 }

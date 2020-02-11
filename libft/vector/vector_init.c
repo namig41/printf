@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   vector_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 20:10:04 by fpythago         ###   ########.fr       */
+/*   Created: 2020/02/07 17:16:05 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/11 19:16:16 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include <stdio.h>
+#include "vector.h"
 
-int		ft_printf(const char *format, ...)
+int		vector_init(t_vector *vector, size_t capacity, size_t element_size)
 {
-	t_printf p;
-
-	ft_bzero(&p, sizeof(p));
-	vector_init(&p.buffer, BUF_SIZE, sizeof(char));
-	va_start(p.arg, format);
-	p.format = (char *)format;
-	parse_format(&p);
-	vector_destroy(&p.buffer);
-	va_end(p.arg);
-	return (p.buffer.size);
+	if (!vector)
+		return (VECTOR_ERROR);
+	vector->size = 0;
+	vector->capacity = FT_MAX(VECTOR_MIN_CAPACITY, capacity);
+	vector->element_size = element_size;
+	if (!(vector->data = malloc(vector->capacity * vector->element_size)))
+		return (VECTOR_ERROR);
+	return (VECTOR_SUCCESS);
 }

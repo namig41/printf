@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 20:10:04 by fpythago         ###   ########.fr       */
+/*   Created: 2019/09/27 16:01:25 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/11 18:56:34 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include <stdio.h>
+#include "libft.h"
 
-int		ft_printf(const char *format, ...)
+void		*ft_memchr(const void *s, int c, size_t n)
 {
-	t_printf p;
+	t_uc	*ns;
+	size_t	i;
 
-	ft_bzero(&p, sizeof(p));
-	vector_init(&p.buffer, BUF_SIZE, sizeof(char));
-	va_start(p.arg, format);
-	p.format = (char *)format;
-	parse_format(&p);
-	vector_destroy(&p.buffer);
-	va_end(p.arg);
-	return (p.buffer.size);
+	i = 0;
+	ns = (t_uc *)s;
+	c = (t_uc)c;
+	while (i < n)
+	{
+		if (ns[i] == c)
+			return ((void *)(ns + i));
+		i++;
+	}
+	return (NULL);
 }

@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 20:10:04 by fpythago         ###   ########.fr       */
+/*   Created: 2019/09/27 16:05:17 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/11 19:06:02 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include <stdio.h>
+#include "libft.h"
 
-int		ft_printf(const char *format, ...)
+size_t		ft_putstr(char const *s, size_t width)
 {
-	t_printf p;
+	size_t	i;
+	size_t	count;
+	size_t	len;
 
-	ft_bzero(&p, sizeof(p));
-	vector_init(&p.buffer, BUF_SIZE, sizeof(char));
-	va_start(p.arg, format);
-	p.format = (char *)format;
-	parse_format(&p);
-	vector_destroy(&p.buffer);
-	va_end(p.arg);
-	return (p.buffer.size);
+	count = 0;
+	if (s)
+	{
+		i = 0;
+		len = ft_strlen(s);
+		width = (width > 0) ? FT_MIN(len, width) : 0;
+		while (i < width)
+			count += ft_putchar(s[i++]);
+	}
+	return (count);
 }

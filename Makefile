@@ -6,119 +6,48 @@
 #    By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 15:54:57 by lcarmelo          #+#    #+#              #
-#    Updated: 2019/09/27 15:55:04 by lcarmelo         ###   ########.fr        #
+#    Updated: 2020/02/11 20:49:30 by fpythago         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libftprintf.a
+FUN_NAME = \
+	ft_printf \
+	handle_numbers \
+	parse \
+	buffer \
+	print
 
-SRC_DIR = ./src/
-INC_DIR = ./includes/
-LIB_DIR = ./libft/
+DIR_SRC		= ./src/
+DIR_INC		= ./includes/
+DIR_LIB		= ./libft/
 
-SRC_NAME = ft_printf \
+SRC_PRINTF 	= $(addprefix $(DIR_SRC), $(addsuffix .c, $(FUN_NAME)))
+OBJ_PRINTF 	= $(addsuffix .o, $(FUN_NAME))
 
-FUNCS_1 = ft_memset \
-		ft_bzero \
-		ft_memcpy \
-		ft_memccpy \
-		ft_memmove \
-		ft_memcmp \
-		ft_memchr \
-		ft_strlen \
-		ft_strdup \
-		ft_strcpy \
-		ft_strncpy \
-		ft_strcat \
-		ft_strncat \
-		ft_strlcat \
-		ft_strchr \
-		ft_strrchr \
-		ft_strstr \
-		ft_strnstr \
-		ft_strcmp \
-		ft_strncmp \
-		ft_atoi \
-		ft_isalpha \
-		ft_isdigit \
-		ft_isalnum \
-		ft_isascii \
-		ft_isprint \
-		ft_toupper \
-		ft_tolower
-
-
-FUNCS_2 = \
-        ft_memalloc \
-		ft_memdel \
-		ft_strnew \
-		ft_strdel \
-		ft_striter \
-		ft_striteri \
-		ft_strmap \
-		ft_strmapi \
-		ft_strequ \
-		ft_strnequ \
-		ft_strsub \
-		ft_strjoin \
-		ft_strtrim \
-		ft_strsplit \
-		ft_itoa \
-		ft_putchar \
-		ft_putnbr \
-		ft_putstr \
-		ft_putendl \
-		ft_putchar_fd \
-		ft_putnbr_fd \
-		ft_putstr_fd \
-		ft_putendl_fd \
-		ft_strclr
-FUNCS_3	= \
-        ft_lstnew \
-        ft_lstdelone \
-        ft_lstdel \
-        ft_lstiter \
-        ft_lstmap \
-        ft_lstadd
-MY_FUNCS = \
-		ft_max \
-		ft_min \
-		ft_random \
-		ft_strsave \
-		ft_sqrt \
-		ft_lltoa \
-		ft_uitoa_base \
-
-ALL_FUNCS = $(FUNCS_1) $(FUNCS_2) $(FUNCS_3) $(MY_FUNCS)
-
-SRCSLIB = $(addprefix $(LIB_DIR), $(addsuffix .c, $(ALL_FUNCS)))
-
-SRCSPRINTF = $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_NAME)))
-
-OBJLIB = $(addsuffix .o, $(ALL_FUNCS))
-
-OBJPRINTF = $(addsuffix .o, $(SRC_NAME))
-
-ALLOBJS = $(OBJLIB)  $(OBJPRINTF)
-
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIB_DIR)
+CC 	   		= gcc
+NAME 		= libftprintf.a
+CFLAGS 	   	= -Wall -Werror -Wextra -O2 -I$(DIR_INC) -I$(DIR_LIB)$(DIR_INC)
 
 all: $(NAME)
 
-$(ALLOBJS):
-	$(CC) $(CFLAGS) -c $(SRCSLIB) $(SRCSPRINTF) 
-
-$(NAME): $(ALLOBJS)
-	ar rc $(NAME) $?
-	ranlib $(NAME)
-	rm -f $(ALLOBJS)
-	gcc ./src/main.c libftprintf.a -I $(LIB_DIR) -I $(INC_DIR)
+$(NAME):
+	@make -C $(DIR_LIB)
+	@cp libft/libft.a ./$(NAME)
+	@$(CC) -c $(CFLAGS) $(SRC_PRINTF)
+	@ar rc $(NAME) $(OBJ_PRINTF)
+	@ranlib $(NAME)
 
 clean:
-	rm -f $(ALLOBJS)
+	@make clean -C $(DIR_LIB)
+	@rm -f $(OBJ_PRINTF)
 
 fclean: clean
-	rm -f $(NAME)
+	@make fclean -C $(DIR_LIB)
+	@rm -f $(NAME)
 
 re: fclean all
+
+compile: re clean
+	@$(CC) $(CFLAGS) src/main.c $(NAME)	
+
+.PHONY: all clean fclean re compile

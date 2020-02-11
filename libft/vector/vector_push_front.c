@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   vector_push_front.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 20:10:04 by fpythago         ###   ########.fr       */
+/*   Created: 2020/02/07 14:38:16 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/11 20:15:40 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include <stdio.h>
+#include "vector.h"
 
-int		ft_printf(const char *format, ...)
+int		vector_push_front(t_vector *vector, void *element)
 {
-	t_printf p;
-
-	ft_bzero(&p, sizeof(p));
-	vector_init(&p.buffer, BUF_SIZE, sizeof(char));
-	va_start(p.arg, format);
-	p.format = (char *)format;
-	parse_format(&p);
-	vector_destroy(&p.buffer);
-	va_end(p.arg);
-	return (p.buffer.size);
+	if (!vector || !element)
+		return (VECTOR_ERROR);
+	if (vector->size == vector->capacity && !vector_reallocate(vector))
+		return (VECTOR_ERROR);
+	l_vector_offset(vector, 0, element, OFFSET_RIGHT);
+	vector->size++;
+	return (VECTOR_SUCCESS);
 }

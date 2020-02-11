@@ -6,100 +6,88 @@
 #    By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 15:54:57 by lcarmelo          #+#    #+#              #
-#    Updated: 2019/09/27 15:55:04 by lcarmelo         ###   ########.fr        #
+#    Updated: 2020/02/11 20:42:41 by fpythago         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-FUNCS_1 = ft_memset \
-		ft_bzero \
-		ft_memcpy \
-		ft_memccpy \
-		ft_memmove \
-		ft_memcmp \
-		ft_memchr \
-		ft_strlen \
-		ft_strdup \
-		ft_strcpy \
-		ft_strncpy \
-		ft_strcat \
-		ft_strncat \
-		ft_strlcat \
-		ft_strchr \
-		ft_strrchr \
-		ft_strstr \
-		ft_strnstr \
-		ft_strcmp \
-		ft_strncmp \
-		ft_atoi \
-		ft_isalpha \
-		ft_isdigit \
-		ft_isalnum \
-		ft_isascii \
-		ft_isprint \
-		ft_toupper \
-		ft_tolower
-
-
-FUNCS_2 = \
-        ft_memalloc \
-		ft_memdel \
-		ft_strnew \
-		ft_strdel \
-		ft_striter \
-		ft_striteri \
-		ft_strmap \
-		ft_strmapi \
-		ft_strequ \
-		ft_strnequ \
-		ft_strsub \
-		ft_strjoin \
-		ft_strtrim \
-		ft_strsplit \
-		ft_itoa \
-		ft_putchar \
-		ft_putnbr \
-		ft_putstr \
-		ft_putendl \
-		ft_putchar_fd \
-		ft_putnbr_fd \
-		ft_putstr_fd \
-		ft_putendl_fd \
-		ft_strclr
-FUNCS_3	= \
-        ft_lstnew \
-        ft_lstdelone \
-        ft_lstdel \
-        ft_lstiter \
-        ft_lstmap \
-        ft_lstadd
-MY_FUNCS = \
-		ft_max \
-		ft_min \
-		ft_random \
-		ft_strsave \
-		ft_sqrt \
+		
+FUN_CONVERSION = \
+        ft_atoi \
 		ft_lltoa \
 		ft_uitoa_base \
+		ft_ulltoa_base \
 
+FUN_MEMORY = \
+        ft_memset \
+        ft_bzero \
+        ft_memcpy \
+        ft_memccpy \
+        ft_memmove \
+        ft_memchr \
+        ft_memalloc \
+        ft_memdel \
+		ft_memswap \
+		ft_swap \
+		ft_pow
 
-ALL_FUNCS = $(FUNCS_1) $(FUNCS_2) $(FUNCS_3) $(MY_FUNCS)
-NAME = libft.a
-SRC = $(addprefix $(SRC_PATH), $(addsuffix .c, $(ALL_FUNCS)))
-OBJS = $(addsuffix .o, $(ALL_FUNCS))
-SRC_PATH = ./
-INCLUDE_PATH = ./
-CFLAGS = -Wall -Wextra -Werror -I$(INCLUDE_PATH)
+FUN_STRINGS = \
+        ft_isprint \
+        ft_isdigit \
+        ft_putchar \
+        ft_putstr \
+        ft_strlen \
+        ft_strchr \
+        ft_strchri 
+
+FUN_VECTOR = \
+		vector_init \
+		vector_copy \
+		vector_move \
+		vector_push_back \
+		vector_push_front \
+		vector_insert \
+		vector_get_element \
+		vector_pop_back \
+		vector_pop_front \
+		vector_erase \
+		vector_clear \
+		vector_destroy \
+		vector_is_empty \
+		vector_byte_size \
+		vector_resize \
+		vector_reallocate \
+		vector_offset 
+
+DIR_CONVERSION  = ./conversion/
+DIR_MEMORY      = ./memory/
+DIR_STRINGS     = ./strings/
+DIR_VECTOR 		= ./vector/
+DIR_INC   		= ./includes
+
+SRC_CONVERSION  = $(addprefix $(DIR_CONVERSION), $(addsuffix .c, $(FUN_CONVERSION)))
+SRC_MEMORY      = $(addprefix $(DIR_MEMORY), $(addsuffix .c, $(FUN_MEMORY)))
+SRC_STRINGS     = $(addprefix $(DIR_STRINGS), $(addsuffix .c, $(FUN_STRINGS)))
+SRC_VECTOR 		= $(addprefix $(DIR_VECTOR), $(addsuffix .c, $(FUN_VECTOR)))
+
+SRC_ALL         = $(SRC_CONVERSION) $(SRC_MEMORY) $(SRC_STRINGS) $(SRC_VECTOR)
+OBJ_ALL         = $(addsuffix .o, $(FUN_CONVERSION) $(FUN_MEMORY) $(FUN_STRINGS) $(FUN_VECTOR))
+
+CC              = gcc
+NAME            = libft.a
+CFLAGS          = -Wall -Wextra -Werror -O2 -I$(DIR_INC)
 
 all: $(NAME)
 
-$(OBJS): %.o: %.c
-	gcc -c $(CFLAGS) $^
+$(OBJ_ALL):
+	$(CC) -c $(CFLAGS) $(SRC_ALL) 
 
-$(NAME): $(OBJS)
-	ar rc $(NAME) $?
-	ranlib $(NAME)
+$(NAME): $(OBJ_ALL)
+	@ar rc $(NAME) $?
+	@ranlib $(NAME)
+
 clean:
-	rm -f $(OBJS)
+	@rm -f $(OBJ_ALL)
+
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
+
 re: fclean all

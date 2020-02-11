@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   ft_memccpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 20:10:04 by fpythago         ###   ########.fr       */
+/*   Created: 2019/09/27 16:01:13 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/11 18:56:16 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include <stdio.h>
+#include "libft.h"
 
-int		ft_printf(const char *format, ...)
+void		*ft_memccpy(void *dst, const void *src, int c, size_t n)
 {
-	t_printf p;
+	t_uc	*d;
+	t_cuc	*s;
+	size_t	i;
 
-	ft_bzero(&p, sizeof(p));
-	vector_init(&p.buffer, BUF_SIZE, sizeof(char));
-	va_start(p.arg, format);
-	p.format = (char *)format;
-	parse_format(&p);
-	vector_destroy(&p.buffer);
-	va_end(p.arg);
-	return (p.buffer.size);
+	c = (t_uc)c;
+	d = (t_uc *)dst;
+	s = (t_cuc *)src;
+	i = 0;
+	while (i < n)
+	{
+		if ((d[i] = s[i]) == c)
+			return ((void *)(d + i + 1));
+		i++;
+	}
+	return (NULL);
 }

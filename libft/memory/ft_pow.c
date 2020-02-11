@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_pow.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fpythago <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/11 20:03:17 by fpythago          #+#    #+#             */
-/*   Updated: 2020/02/11 20:47:37 by fpythago         ###   ########.fr       */
+/*   Created: 2020/02/11 20:27:57 by fpythago          #+#    #+#             */
+/*   Updated: 2020/02/11 20:45:36 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include "vector.h"
-#include <stdio.h>
-
-int		main(void)
+#include <stddef.h>
+long long 	ft_pow(long long a, size_t n) 
 {
-	ft_printf("%#o", 0);
-	printf("%lld", ft_pow(2, 10));
-	return (0);
+	if (n == 0)
+		return 1;
+	if (n == 1)
+		return a;
+	return n % 2 == 0 ? ft_pow(a * a, n / 2) : a * ft_pow(a, n - 1);
 }

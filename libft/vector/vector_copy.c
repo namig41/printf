@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   vector_copy.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 20:10:04 by fpythago         ###   ########.fr       */
+/*   Created: 2020/02/07 14:37:21 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/11 19:14:02 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include <stdio.h>
+#include "vector.h"
 
-int		ft_printf(const char *format, ...)
+int		vector_copy(t_vector *dst, const t_vector *src)
 {
-	t_printf p;
-
-	ft_bzero(&p, sizeof(p));
-	vector_init(&p.buffer, BUF_SIZE, sizeof(char));
-	va_start(p.arg, format);
-	p.format = (char *)format;
-	parse_format(&p);
-	vector_destroy(&p.buffer);
-	va_end(p.arg);
-	return (p.buffer.size);
+	if (!dst || !src)
+		return (VECTOR_ERROR);
+	dst->size = src->size;
+	dst->capacity = src->capacity;
+	dst->element_size = src->element_size;
+	ft_memdel(&dst->data);
+	if (!(dst->data = malloc(dst->capacity * dst->element_size)))
+		return (VECTOR_ERROR);
+	ft_memcpy(dst->data, src->data, vector_byte_size(dst));
+	return (VECTOR_SUCCESS);
 }
