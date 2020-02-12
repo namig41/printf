@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_move.c                                      :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/07 14:37:52 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/12 14:34:28 by lcarmelo         ###   ########.fr       */
+/*   Created: 2019/09/27 16:05:50 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/11 15:50:13 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector.h"
+#include "libft.h"
 
-int vector_move(t_vector *dst, t_vector *src)
+char		*ft_strcat(char *dest, const char *src)
 {
-    if (!src || !vector_destroy(dst))
-        return (VECTOR_ERROR);
-    *dst = *src;
-    src->data = 0;
-    return (VECTOR_SUCCESS);
+	size_t len;
+	size_t i;
+
+	len = ft_strlen(dest);
+	i = 0;
+	while (src[i])
+	{
+		dest[len + i] = src[i];
+		i++;
+	}
+	dest[len + i] = '\0';
+	return (dest);
 }

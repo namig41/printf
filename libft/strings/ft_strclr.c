@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_move.c                                      :+:      :+:    :+:   */
+/*   ft_strclr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/07 14:37:52 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/12 14:34:28 by lcarmelo         ###   ########.fr       */
+/*   Created: 2019/09/27 16:07:43 by lcarmelo          #+#    #+#             */
+/*   Updated: 2019/09/27 16:07:44 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector.h"
+#include "libft.h"
 
-int vector_move(t_vector *dst, t_vector *src)
+void	ft_strclr(char *s)
 {
-    if (!src || !vector_destroy(dst))
-        return (VECTOR_ERROR);
-    *dst = *src;
-    src->data = 0;
-    return (VECTOR_SUCCESS);
+	if (!s)
+		return ;
+	while (*s)
+		*s++ = '\0';
 }

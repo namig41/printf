@@ -6,14 +6,11 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/05 19:22:28 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2020/02/11 14:30:50 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
-
-
 
 int         ft_printf(const char *format, ...)
 {

@@ -6,10 +6,9 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:34 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/10 17:20:44 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2020/02/11 18:16:03 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
-
+/* ************************************************************************** */ 
 #ifndef __FT_PRINTF__
 # define __FT_PRINTF__
 # include <stdarg.h>
@@ -66,6 +65,7 @@
 
 # define STR_NULL 	"(null)"
 # define BUF_SIZE 	16 
+# define STD_PRECI  6
 # define SAVE 		1		
 
 /*
@@ -110,6 +110,7 @@ void			handle_int(t_printf *p);
 void			handle_uint(t_printf *p);
 void			handle_hex(t_printf *p);
 void			handle_oct(t_printf *p);
+void            handle_float(t_printf *p);
 
 /*
 ** --------------------------- PRINT ----------------------------------------------------

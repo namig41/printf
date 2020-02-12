@@ -6,7 +6,7 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/10 21:56:52 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2020/02/12 18:53:27 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ void        parse_specifier(t_printf *p)
     p->c = *p->format;
     if (ft_strchr(S_INT, p->c))
         handle_int(p);
+    else if (ft_strchr(S_FLOAT, p->c))
+        handle_float(p);
     else if (ft_strchr(S_UINT, p->c))
         handle_uint(p);
     else if (ft_strchr(S_HEX, p->c))
@@ -76,8 +78,6 @@ void        parse_specifier(t_printf *p)
         print_char(p);
     else if (ft_strchr(S_STR, p->c))
         print_str(p);
-    // else if (ft_strchr(S_FLOAT, p->c))
-    //    //     handle_float(p);
     else if (p->c)
         buffer_set(p, p->c, 1, SAVE);
     else

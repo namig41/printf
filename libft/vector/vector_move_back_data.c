@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_move.c                                      :+:      :+:    :+:   */
+/*   vector_move_back_data.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/07 14:37:52 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/12 14:34:28 by lcarmelo         ###   ########.fr       */
+/*   Created: 2020/02/11 16:58:44 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/12 14:34:21 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 
-int vector_move(t_vector *dst, t_vector *src)
+int     vector_move_back_data(t_vector *vector, void **data, size_t size)
 {
-    if (!src || !vector_destroy(dst))
+    if (!vector_push_data(vector, *data, size))
         return (VECTOR_ERROR);
-    *dst = *src;
-    src->data = 0;
+    ft_memdel(data);
     return (VECTOR_SUCCESS);
 }
