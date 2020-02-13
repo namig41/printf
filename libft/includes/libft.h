@@ -28,6 +28,7 @@ typedef unsigned char		t_uc;
 typedef const unsigned char	t_cuc;
 typedef unsigned long long	t_ull;
 typedef long long			t_ll;
+typedef unsigned long 		t_ul;
 typedef long				t_l;
 typedef short int			t_si;
 typedef unsigned long		t_ul;

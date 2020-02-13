@@ -26,7 +26,8 @@ OBJ_PRINTF 	= $(addsuffix .o, $(FUN_NAME))
 
 CC 	   		= gcc
 NAME 		= libftprintf.a
-CFLAGS 	   	= -Wall -Werror -Wextra -O2 -I$(DIR_INC) -I$(DIR_LIB)$(DIR_INC)
+#CFLAGS 	   	= -Wall -Werror -Wextra -O2 -I$(DIR_INC) -I$(DIR_LIB)$(DIR_INC)
+CFLAGS 		=  -O2 -I$(DIR_INC) -I$(DIR_LIB)$(DIR_INC)
 
 all: $(NAME)
 
