@@ -6,13 +6,13 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 16:41:20 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 19:01:38 by fpythago         ###   ########.fr       */
+/*   Updated: 2020/02/17 13:50:26 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_memswap(void *a, void *b, size_t size)
+void		ft_memswap(void *a, void *b, size_t size)
 {
 	void	*tmp;
 

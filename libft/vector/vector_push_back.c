@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector_push_back.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 14:38:06 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 20:15:23 by fpythago         ###   ########.fr       */
+/*   Updated: 2020/02/17 16:01:20 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		vector_push_back(t_vector *vector, void *element)
 		return (VECTOR_ERROR);
 	if (vector->size == vector->capacity && !vector_reallocate(vector))
 		return (VECTOR_ERROR);
-	l_vector_offset(vector, vector->size, element, OFFSET_NO);
+	ft_vector_offset(vector, vector->size, element, OFFSET_NO);
 	vector->size++;
 	return (VECTOR_SUCCESS);
 }

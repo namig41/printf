@@ -1,30 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   vector_free_size.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/27 16:01:25 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/17 13:47:27 by fpythago         ###   ########.fr       */
+/*   Created: 2020/02/11 16:40:16 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/17 15:36:03 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "vector.h"
 
-void		*ft_memchr(const void *s, int c, size_t n)
+size_t	vector_free_size(const t_vector *vector)
 {
-	t_uc	*ns;
-	size_t	i;
-
-	i = 0;
-	ns = (t_uc *)s;
-	c = (t_uc)c;
-	while (i < n)
-	{
-		if (ns[i] == c)
-			return ((void *)(ns + i));
-		i++;
-	}
-	return (NULL);
+	return ((vector) ? (vector->capacity - vector->size)
+						* vector->element_size : 0);
 }

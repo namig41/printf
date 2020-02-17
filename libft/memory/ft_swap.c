@@ -6,13 +6,13 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 16:53:19 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 18:58:51 by fpythago         ###   ########.fr       */
+/*   Updated: 2020/02/17 13:51:39 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	ft_swap(void **a, void **b)
+void		ft_swap(void **a, void **b)
 {
-	void *tmp;
+	void	*tmp;
 
 	tmp = *a;
 	*a = *b;

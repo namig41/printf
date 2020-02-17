@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:34 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 18:13:26 by fpythago         ###   ########.fr       */
+/*   Updated: 2020/02/17 16:55:44 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # define F_ZERO		16
 # define F_WILDCARD	32
 # define F_PRECI	64
-# define F_UPCASE	128
+# define F_FZERO	128
 
 # define MODIFIERS	"hljz"
 # define M_SHORT	1
@@ -46,6 +46,7 @@
 
 # define STR_NULL 	"(null)"
 # define BUF_SIZE 	16
+# define STD_PRECI  6
 # define SAVE 		1
 
 typedef struct	s_printf
@@ -61,6 +62,19 @@ typedef struct	s_printf
 	va_list		arg;
 }				t_printf;
 
+typedef union	u_float
+{
+	t_ld ld_float;
+	char c_float[16];
+}				t_float;
+
+typedef struct	s_float_flags
+{
+	t_uc sign;
+	t_ul exp;
+	t_ul man;
+}				t_float_flags;
+
 int				ft_printf(const char *format, ...);
 
 void			parse_format(t_printf *p);
@@ -74,6 +88,7 @@ void			handle_int(t_printf *p);
 void			handle_uint(t_printf *p);
 void			handle_hex(t_printf *p);
 void			handle_oct(t_printf *p);
+void			handle_float(t_printf *p);
 
 void			print_nbr(t_printf *p, char *s, char *pref);
 void			print_char(t_printf *p);

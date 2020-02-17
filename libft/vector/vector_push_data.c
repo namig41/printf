@@ -1,21 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_clear.c                                     :+:      :+:    :+:   */
+/*   vector_push_data.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/07 16:12:19 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/17 15:32:32 by fpythago         ###   ########.fr       */
+/*   Created: 2020/02/11 16:34:00 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/17 15:45:03 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 
-int		vector_clear(t_vector *vector)
+int		vector_push_data(t_vector *vector, void *data, size_t size)
 {
-	if (!vector)
+	size_t i;
+
+	i = 0;
+	if (!vector || !data || !size)
 		return (VECTOR_ERROR);
-	ft_bzero(vector->data, vector_byte_size(vector));
+	while (i < size)
+	{
+		if (!vector_push_back(vector, data + i * vector->element_size))
+			return (VECTOR_ERROR);
+		i++;
+	}
 	return (VECTOR_SUCCESS);
 }

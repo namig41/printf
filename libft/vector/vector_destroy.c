@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   vector_destroy.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 14:37:29 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 19:14:34 by fpythago         ###   ########.fr       */
+/*   Updated: 2020/02/17 15:33:37 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 
-int	vector_destroy(t_vector *vector)
+int		vector_destroy(t_vector *vector)
 {
 	if (!vector)
 		return (VECTOR_ERROR);

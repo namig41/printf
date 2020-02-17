@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   vector_move_data.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/27 16:01:25 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/17 13:47:27 by fpythago         ###   ########.fr       */
+/*   Created: 2020/02/11 16:13:44 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/17 15:40:52 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "vector.h"
 
-void		*ft_memchr(const void *s, int c, size_t n)
+int		vector_move_data(t_vector *vector, void **data)
 {
-	t_uc	*ns;
-	size_t	i;
-
-	i = 0;
-	ns = (t_uc *)s;
-	c = (t_uc)c;
-	while (i < n)
-	{
-		if (ns[i] == c)
-			return ((void *)(ns + i));
-		i++;
-	}
-	return (NULL);
+	if (!vector || data || !*data)
+		return (VECTOR_ERROR);
+	vector_push_back(vector, *data);
+	ft_memdel(data);
+	return (VECTOR_SUCCESS);
 }

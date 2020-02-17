@@ -6,13 +6,13 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 15:56:15 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 18:36:23 by fpythago         ###   ########.fr       */
+/*   Updated: 2020/02/17 13:16:46 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int				check_overflow(int sign)
+static int			check_overflow(int sign)
 {
 	if (sign == -1)
 		return (0);
@@ -20,11 +20,11 @@ static int				check_overflow(int sign)
 		return (-1);
 }
 
-int						ft_atoi(const char *str)
+int					ft_atoi(const char *str)
 {
-	t_ll				max;
-	t_ll				prev;
-	int					sign;
+	t_ll			max;
+	t_ll			prev;
+	int				sign;
 
 	sign = 1;
 	max = 0;

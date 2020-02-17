@@ -3,13 +3,13 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 15:54:57 by lcarmelo          #+#    #+#              #
-#    Updated: 2020/02/11 20:42:41 by fpythago         ###   ########.fr        #
+#    Updated: 2020/02/17 18:36:32 by fpythago         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-		
+
 FUN_CONVERSION = \
         ft_atoi \
 		ft_lltoa \
@@ -27,7 +27,8 @@ FUN_MEMORY = \
         ft_memdel \
 		ft_memswap \
 		ft_swap \
-		ft_pow
+		ft_max \
+		ft_min
 
 FUN_STRINGS = \
         ft_isprint \
@@ -36,12 +37,20 @@ FUN_STRINGS = \
         ft_putstr \
         ft_strlen \
         ft_strchr \
-        ft_strchri 
+		ft_strjoin \
+		ft_strcpy \
+		ft_strdup \
+		ft_strcat \
+        ft_strchri \
+		ft_strclr
 
 FUN_VECTOR = \
 		vector_init \
 		vector_copy \
 		vector_move \
+		vector_move_data \
+		vector_move_back_data \
+		vector_push_data \
 		vector_push_back \
 		vector_push_front \
 		vector_insert \
@@ -53,6 +62,7 @@ FUN_VECTOR = \
 		vector_destroy \
 		vector_is_empty \
 		vector_byte_size \
+		vector_free_size \
 		vector_resize \
 		vector_reallocate \
 		vector_offset 
@@ -73,7 +83,7 @@ OBJ_ALL         = $(addsuffix .o, $(FUN_CONVERSION) $(FUN_MEMORY) $(FUN_STRINGS)
 
 CC              = gcc
 NAME            = libft.a
-CFLAGS          = -Wall -Wextra -Werror -O2 -I$(DIR_INC)
+CFLAGS          = -Wall -Werror -Wextra -O2 -I$(DIR_INC)
 
 all: $(NAME)
 

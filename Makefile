@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 15:54:57 by lcarmelo          #+#    #+#              #
-#    Updated: 2020/02/11 20:49:30 by fpythago         ###   ########.fr        #
+#    Updated: 2020/02/17 17:00:48 by fpythago         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ FUN_NAME = \
 	handle_numbers \
 	parse \
 	buffer \
-	print
+	print \
+	aux
 
 DIR_SRC		= ./src/
 DIR_INC		= ./includes/
@@ -27,6 +28,7 @@ OBJ_PRINTF 	= $(addsuffix .o, $(FUN_NAME))
 CC 	   		= gcc
 NAME 		= libftprintf.a
 CFLAGS 	   	= -Wall -Werror -Wextra -O2 -I$(DIR_INC) -I$(DIR_LIB)$(DIR_INC)
+CFLAGS 		=  -O2 -I$(DIR_INC) -I$(DIR_LIB)$(DIR_INC)
 
 all: $(NAME)
 

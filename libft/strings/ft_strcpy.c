@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/27 16:01:25 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/17 13:47:27 by fpythago         ###   ########.fr       */
+/*   Created: 2019/09/27 16:08:20 by lcarmelo          #+#    #+#             */
+/*   Updated: 2019/09/27 16:08:21 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void		*ft_memchr(const void *s, int c, size_t n)
+char	*ft_strcpy(char *dst, const char *src)
 {
-	t_uc	*ns;
-	size_t	i;
+	size_t i;
 
+	if (!dst && !src)
+		return (NULL);
 	i = 0;
-	ns = (t_uc *)s;
-	c = (t_uc)c;
-	while (i < n)
+	while (src[i])
 	{
-		if (ns[i] == c)
-			return ((void *)(ns + i));
+		dst[i] = src[i];
 		i++;
 	}
-	return (NULL);
+	dst[i] = '\0';
+	return (dst);
 }

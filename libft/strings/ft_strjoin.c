@@ -1,21 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_clear.c                                     :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/07 16:12:19 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/17 15:32:32 by fpythago         ###   ########.fr       */
+/*   Created: 2019/09/27 16:10:00 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/17 18:21:48 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector.h"
+#include "libft.h"
 
-int		vector_clear(t_vector *vector)
+char	*ft_strjoin(const char *str1, const char *str2)
 {
-	if (!vector)
-		return (VECTOR_ERROR);
-	ft_bzero(vector->data, vector_byte_size(vector));
-	return (VECTOR_SUCCESS);
+	char	*str3;
+
+	if (!str1 && !str2)
+		return (NULL);
+	if (!str1)
+		return (ft_strdup(str2));
+	if (!str2)
+		return (ft_strdup(str1));
+	if (!(str3 = malloc(sizeof(*str3) *
+						(ft_strlen(str1) + ft_strlen(str2) + 1))))
+		return (NULL);
+	ft_strcpy(str3, (char *)str1);
+	ft_strcat(str3, (char *)str2);
+	return (str3);
 }

@@ -3,23 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   vector_reallocate.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 14:38:31 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 19:29:55 by fpythago         ###   ########.fr       */
+/*   Updated: 2020/02/17 19:01:08 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 
-int		vector_reallocate(t_vector *vector)
+static size_t		vector_int_capacity(size_t size, size_t speed)
+{
+	return (size << speed);
+}
+
+int					vector_reallocate(t_vector *vector)
 {
 	t_vector old;
 
 	if (!vector)
 		return (VECTOR_ERROR);
-	if (!vector_init(&old, VECTOR_INC_CAPACITY(vector->capacity,
-					VECTOR_SPEED), vector->element_size))
+	if (!vector_init(&old, vector_int_capacity(vector->capacity,
+							VECTOR_SPEED), vector->element_size))
 		return (VECTOR_ERROR);
 	old.size = vector->size;
 	old.element_size = vector->element_size;

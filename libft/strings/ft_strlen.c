@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 16:10:19 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/11 19:08:07 by fpythago         ###   ########.fr       */
+/*   Updated: 2020/02/17 19:22:18 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,7 @@ size_t	ft_strlen(const char *str)
 	const unsigned long	*lp;
 
 	if (!str)
-	{
 		return (0);
-	}
 	lp = (const unsigned long *)((uintptr_t)str & ~(sizeof(long) - 1));
 	if ((*lp - g_mask01) & ((~*lp) & g_mask80))
 	{

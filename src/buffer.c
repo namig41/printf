@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buffer.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fpythago <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/11 19:35:55 by fpythago          #+#    #+#             */
-/*   Updated: 2020/02/11 19:37:35 by fpythago         ###   ########.fr       */
+/*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/17 18:38:49 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		buffer_push_array(t_printf *p, const char *s, size_t width)
 	{
 		i = 0;
 		len = ft_strlen(s);
-		width = FT_MIN(len, width);
+		width = ft_min(len, width);
 		while (i < width && vector_push_back(&p->buffer, (char *)s + i++))
 			;
 	}
