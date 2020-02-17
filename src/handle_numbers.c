@@ -6,7 +6,7 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/12 19:43:24 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2020/02/16 20:14:08 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void handle_hex(t_printf *p)
 {
     char *str_hex;
     char *pref;
+    t_uc f_upcase;
 
     if (p->c == 'p')
     {
@@ -67,10 +68,10 @@ void handle_hex(t_printf *p)
                                      ft_ulltoa_base((t_uc)va_arg(p->arg, t_ui), BASE_16, p->c);
     else
         str_hex = ft_ulltoa_base(va_arg(p->arg, t_ui), BASE_16, p->c);
-    p->f |= ('A' <= p->c && p->c <= 'Z' && p->f & F_SHARP) ? F_UPCASE : 0;
+    f_upcase = ('A' <= p->c && p->c <= 'Z' && p->f & F_SHARP);
     p->len = ft_strlen(str_hex);
     pref = ((p->f & F_SHARP && *str_hex != '0') || p->c == 'p') ? "0x" : 0;
-    pref = (pref && p->f && p->f & F_UPCASE) ? "0X" : pref;
+    pref = (pref && f_upcase) ? "0X" : pref;
     print_nbr(p, str_hex, pref); 
     ft_memdel((void **)&str_hex);
 }
@@ -97,35 +98,81 @@ void handle_oct(t_printf *p)
 
 void handle_float(t_printf *p)
 {
-    double real1;
+    t_ld real;
+    t_vector vec_float;
     char *str_float;
     char *pref;
-    t_vector vec_float;
+    size_t i;
     
     pref = 0;
-    real1 = va_arg(p->arg, double);
-    if (real1 < 0.)
-    {
+    i = 0;
+    real = (p->m & M_LONG_2) ? va_arg(p->arg, t_ld) : va_arg(p->arg, double);
+    p->f |= (p->f & F_FZERO && !(p->f & F_MINUS)) ? F_ZERO : 0;
+    if (real < 0.)
+    { 
         pref = "-";
         p->len--;
-        real1 = -real1;
+        real = -real;
     }
     p->precision = (!p->precision) ? STD_PRECI : p->precision;
-    vector_init(&vec_float, STD_PRECI, sizeof(char));
-    str_float = ft_lltoa((int)real1);
+    vector_init(&vec_float, p->precision, sizeof(char));
+    str_float = ft_lltoa((t_ui)real);
     vector_move_back_data(&vec_float, (void **)&str_float, ft_strlen(str_float));
     vector_push_back(&vec_float, ".");
-    real1 -= (int)real1;
-    while (p->precision--)
+    while (i <= p->precision)
     {
-        real1 = real1 * 10;
-        real1 = real1 - (t_ui)real1 / 10 * 10;
-        printf("%f %d\n", real1, (char)real1);
-        str_float = ft_lltoa((t_ui)real1);
-        vector_move_back_data(&vec_float, (void **)&str_float, ft_strlen(str_float));
+        str_float = ft_lltoa((t_ul)(real * 10) % 10);
+        vector_move_back_data(&vec_float, (void **)&str_float, SAVE);
+        real = real * 10 - (t_ui)real;
+        i++;
     }
-    p->len = vec_float.size;
     str_float = (char *)vec_float.data;
+    if (p->f & F_PRECI)
+    {
+        i = ft_strchri(str_float, '.') + 1;
+        if (str_float[i] > '4')
+        {
+            i -= 2;
+            while (str_float[i] == '9')
+            {
+                str_float[i] = '0';
+                i--;
+            }
+            str_float[i]++;
+        }
+        p->precision = 0;
+        str_float[ft_strchri(str_float, '.') + ((p->f & F_SHARP) != 0)] = '\0';
+        p->f &= ~F_PRECI;
+    }
+    else
+    {
+        i = ft_strchri(str_float, '.') + p->precision + 1;
+        if (str_float[i] == '5' && p->precision == STD_PRECI)
+        {
+            i--;
+            if (((str_float[i] - '0') & 1) && str_float[i] < '9')
+                str_float[i]++;
+        }
+        else if (str_float[i] > '4')
+        {
+            i--;
+            while (str_float[i] == '9')
+            {
+                str_float[i] = '0';
+                i--;
+            }
+            if (str_float[i] == '.')
+                i--;
+            while (str_float[i] == '9')
+            {
+                str_float[i] = '0';
+                i--;
+            }
+            str_float[i]++;
+        }
+        str_float[ft_strchri(str_float, '.') + p->precision + 1] = '\0';
+    }
+    p->len = ft_strlen(str_float);
     pref = (!pref && p->f & F_PLUS) ? "+" : pref;
     pref = (!pref && p->f & F_SPACE) ? " " : pref;
     print_nbr(p, str_float, pref);

@@ -6,7 +6,7 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/12 18:53:27 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2020/02/16 20:14:25 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void        parse_flags(t_printf *p)
 
     while (((n = ft_strchri(FLAGS, *p->format)) > -1) && p->format++)
         p->f |= (1 << n);
+    p->f |= (p->f & F_ZERO) ? F_FZERO : 0;
 	p->f &= (p->f & F_PLUS) ? (~F_SPACE) : 0xFFFF;
     p->f &= (p->f & F_PRECI) ? (~F_ZERO) : 0xFFFF;
 	if (p->f & F_WILDCARD && (p->width = va_arg(p->arg, int) < 0))
