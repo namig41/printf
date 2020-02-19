@@ -6,7 +6,7 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 16:06:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2019/09/27 16:06:25 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2020/02/17 13:56:49 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 int		ft_strchri(const char *s, int c)
 {
-    int i;
+	int	i;
 
-    i = -1;
-    c = (t_uc)c;
+	i = -1;
+	c = (t_uc)c;
 	while (s[++i])
-        if (s[i] == c)
+		if (s[i] == c)
 			return (i);
 	return (-1);
 }

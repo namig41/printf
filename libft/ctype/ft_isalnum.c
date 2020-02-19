@@ -1,30 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/27 16:01:25 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/17 13:47:27 by fpythago         ###   ########.fr       */
+/*   Created: 2019/09/27 15:57:29 by lcarmelo          #+#    #+#             */
+/*   Updated: 2019/09/27 15:57:32 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void		*ft_memchr(const void *s, int c, size_t n)
+int	ft_isalnum(int c)
 {
-	t_uc	*ns;
-	size_t	i;
-
-	i = 0;
-	ns = (t_uc *)s;
-	c = (t_uc)c;
-	while (i < n)
-	{
-		if (ns[i] == c)
-			return ((void *)(ns + i));
-		i++;
-	}
-	return (NULL);
+	return (c >= '0' && c <= '9')
+	|| ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
 }

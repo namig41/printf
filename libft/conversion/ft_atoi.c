@@ -6,7 +6,7 @@
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 15:56:15 by lcarmelo          #+#    #+#             */
-/*   Updated: 2019/09/27 15:56:19 by lcarmelo         ###   ########.fr       */
+/*   Updated: 2020/02/17 13:16:46 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ static int			check_overflow(int sign)
 
 int					ft_atoi(const char *str)
 {
-	t_ll 				max;
-	t_ll 				prev;
+	t_ll			max;
+	t_ll			prev;
 	int				sign;
 
 	sign = 1;

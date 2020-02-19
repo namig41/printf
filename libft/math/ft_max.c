@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   ft_max.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/27 16:01:25 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/17 13:47:27 by fpythago         ###   ########.fr       */
+/*   Created: 2020/02/17 17:41:08 by fpythago          #+#    #+#             */
+/*   Updated: 2020/02/17 18:18:32 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void		*ft_memchr(const void *s, int c, size_t n)
+size_t	ft_max(size_t a, size_t b)
 {
-	t_uc	*ns;
-	size_t	i;
+	if (a > b)
+		return (a);
+	else
+		return (b);
+}
 
-	i = 0;
-	ns = (t_uc *)s;
-	c = (t_uc)c;
-	while (i < n)
-	{
-		if (ns[i] == c)
-			return ((void *)(ns + i));
-		i++;
-	}
-	return (NULL);
+long	ft_max_l(long a, long b)
+{
+	if (a > b)
+		return (a);
+	else
+		return (b);
 }

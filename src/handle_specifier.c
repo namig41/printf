@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   aux.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/27 16:01:25 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/17 13:47:27 by fpythago         ###   ########.fr       */
+/*   Created: 2020/02/17 16:41:49 by fpythago          #+#    #+#             */
+/*   Updated: 2020/02/17 17:08:00 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-void		*ft_memchr(const void *s, int c, size_t n)
+void		handle_specifier(t_printf *p)
 {
-	t_uc	*ns;
-	size_t	i;
-
-	i = 0;
-	ns = (t_uc *)s;
-	c = (t_uc)c;
-	while (i < n)
-	{
-		if (ns[i] == c)
-			return ((void *)(ns + i));
-		i++;
-	}
-	return (NULL);
+	p->f = 0;
+	p->m = 0;
+	p->width = 0;
+	p->precision = 0;
+	parse_flags(p);
+	parse_point(p);
+	parse_modifiers(p);
+	parse_flags(p);
+	parse_specifier(p);
 }

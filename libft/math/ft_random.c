@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   ft_random.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/27 15:58:14 by lcarmelo          #+#    #+#             */
-/*   Updated: 2019/09/27 15:58:20 by lcarmelo         ###   ########.fr       */
+/*   Created: 2019/09/28 16:01:37 by lcarmelo          #+#    #+#             */
+/*   Updated: 2019/09/28 16:01:44 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isdigit(int c)
+#include "libft.h"
+
+static	t_ull	g_next = 1;
+
+t_ui			ft_random(t_ui rand_max)
 {
-	if (c < '0' || c > '9')
-		return (0);
-	return (1);
+	g_next = g_next * 1103515245 + 12345;
+	return (t_ui)(g_next / 65536) % (rand_max + 1);
 }
