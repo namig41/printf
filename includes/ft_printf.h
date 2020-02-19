@@ -6,7 +6,7 @@
 /*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:34 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/17 16:55:44 by fpythago         ###   ########.fr       */
+/*   Updated: 2020/02/19 13:44:57 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 # include <stdarg.h>
 # include "libft.h"
 # include "vector.h"
-
 # define FLAGS		" +-#0*"
 # define F_SPACE 	1
 # define F_PLUS		2
@@ -26,7 +25,7 @@
 # define F_PRECI	64
 # define F_FZERO	128
 
-# define MODIFIERS	"hljz"
+# define MODIFIERS	"hljzL"
 # define M_SHORT	1
 # define M_SHORT_2	2
 # define M_LONG		4
@@ -62,19 +61,6 @@ typedef struct	s_printf
 	va_list		arg;
 }				t_printf;
 
-typedef union	u_float
-{
-	t_ld ld_float;
-	char c_float[16];
-}				t_float;
-
-typedef struct	s_float_flags
-{
-	t_uc sign;
-	t_ul exp;
-	t_ul man;
-}				t_float_flags;
-
 int				ft_printf(const char *format, ...);
 
 void			parse_format(t_printf *p);
@@ -90,11 +76,12 @@ void			handle_hex(t_printf *p);
 void			handle_oct(t_printf *p);
 void			handle_float(t_printf *p);
 
-void			print_nbr(t_printf *p, char *s, char *pref);
-void			print_char(t_printf *p);
-void			print_str(t_printf *p);
-
+void			buffer_add_nbr(t_printf *p, char *s, char *pref);
+void			buffer_add_char(t_printf *p);
+void			buffer_add_str(t_printf *p);
 void			buffer_set(t_printf *p, char c, int count, t_uc f_print);
 void			buffer_push_array(t_printf *p, const char *s, size_t width);
+
+void			round_precision(t_printf *p, char *str, t_vector *vec_float);
 
 #endif

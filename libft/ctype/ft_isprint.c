@@ -1,26 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/27 16:10:19 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/19 11:04:57 by fpythago         ###   ########.fr       */
+/*   Created: 2020/02/07 17:12:26 by lcarmelo          #+#    #+#             */
+/*   Updated: 2020/02/17 13:54:25 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t		ft_strlen(const char *s)
+int		ft_isprint(int c)
 {
-	size_t i;
-
-	i = 0;
-	if (s)
-	{
-		while (s[i])
-			i++;
-	}
-	return (i);
+	return (c >= 32 && c <= 126);
 }

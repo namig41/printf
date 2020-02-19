@@ -6,16 +6,16 @@
 /*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/17 16:22:44 by fpythago         ###   ########.fr       */
+/*   Updated: 2020/02/19 16:17:55 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void		handle_int(t_printf *p)
+void			handle_int(t_printf *p)
 {
-	char	*str_int;
-	char	*pref;
+	char		*str_int;
+	char		*pref;
 
 	if (p->m & M_LONG || p->m & M_LONG_2)
 		str_int = (p->m & M_LONG) ? ft_lltoa(va_arg(p->arg, t_l))
@@ -29,13 +29,13 @@ void		handle_int(t_printf *p)
 	pref = (*str_int == '-' && p->len--) ? "-" : 0;
 	pref = (!pref && p->f & F_PLUS) ? "+" : pref;
 	pref = (!pref && p->f & F_SPACE) ? " " : pref;
-	print_nbr(p, str_int + (*str_int == '-'), pref);
+	buffer_add_nbr(p, str_int + (*str_int == '-'), pref);
 	ft_memdel((void **)&str_int);
 }
 
-void		handle_uint(t_printf *p)
+void			handle_uint(t_printf *p)
 {
-	char *str_uint;
+	char		*str_uint;
 
 	p->m |= (p->c == 'U') ? M_LONG : 0;
 	if (p->m & M_LONG || p->m & M_LONG_2)
@@ -50,15 +50,15 @@ void		handle_uint(t_printf *p)
 	else
 		str_uint = ft_lltoa(va_arg(p->arg, t_ui));
 	p->len = ft_strlen(str_uint);
-	print_nbr(p, str_uint, 0);
+	buffer_add_nbr(p, str_uint, 0);
 	ft_memdel((void **)&str_uint);
 }
 
-void		handle_hex(t_printf *p)
+void			handle_hex(t_printf *p)
 {
-	char	*str_hex;
-	char	*pref;
-	t_uc	f_upcase;
+	char		*str_hex;
+	char		*pref;
+	t_uc		f_upcase;
 
 	if (p->c == 'p')
 	{
@@ -79,14 +79,14 @@ void		handle_hex(t_printf *p)
 	p->len = ft_strlen(str_hex);
 	pref = ((p->f & F_SHARP && *str_hex != '0') || p->c == 'p') ? "0x" : 0;
 	pref = (pref && f_upcase) ? "0X" : pref;
-	print_nbr(p, str_hex, pref);
+	buffer_add_nbr(p, str_hex, pref);
 	ft_memdel((void **)&str_hex);
 }
 
-void		handle_oct(t_printf *p)
+void			handle_oct(t_printf *p)
 {
-	char	*str_oct;
-	char	*pref;
+	char		*str_oct;
+	char		*pref;
 
 	if (p->m & M_LONG || p->m & M_LONG_2)
 		str_oct = (p->m & M_LONG) ? ft_ulltoa_base(va_arg(p->arg,
@@ -101,90 +101,35 @@ void		handle_oct(t_printf *p)
 	p->len = ft_strlen(str_oct);
 	pref = (p->f & F_SHARP && p->len >= p->precision) ? "0" : 0;
 	pref = (*str_oct == '0' && !(p->f & F_PRECI)) ? 0 : pref;
-	print_nbr(p, str_oct, pref);
+	buffer_add_nbr(p, str_oct, pref);
 	ft_memdel((void **)&str_oct);
 }
 
-void		handle_float(t_printf *p)
+void			handle_float(t_printf *p)
 {
 	t_ld		real;
+	t_l			i;
 	t_vector	vec_float;
-	char		*str_float;
+	char		*str_f;
 	char		*pref;
-	size_t		i;
 
-	pref = 0;
-	i = 0;
+	i = -1;
 	real = (p->m & M_LONG_2) ? va_arg(p->arg, t_ld) : va_arg(p->arg, double);
 	p->f |= (p->f & F_FZERO && !(p->f & F_MINUS)) ? F_ZERO : 0;
-	if (real < 0.)
-	{
-		pref = "-";
-		p->len--;
-		real = -real;
-	}
+	pref = ((real < 0) && (real *= -1)) ? "-" : 0;
 	p->precision = (!p->precision) ? STD_PRECI : p->precision;
 	vector_init(&vec_float, p->precision, sizeof(char));
-	str_float = ft_lltoa((t_ui)real);
-	vector_move_back_data(&vec_float, (void **)&str_float,
-							ft_strlen(str_float));
+	str_f = ft_lltoa((t_ui)real);
+	vector_move_back_data(&vec_float, (void **)&str_f, ft_strlen(str_f));
 	vector_push_back(&vec_float, ".");
-	while (i <= p->precision)
+	while (++i <= p->precision && (str_f = ft_lltoa((t_ul)(real * 10) % 10)))
 	{
-		str_float = ft_lltoa((t_ul)(real * 10) % 10);
-		vector_move_back_data(&vec_float, (void **)&str_float, SAVE);
+		vector_move_back_data(&vec_float, (void **)&str_f, SAVE);
 		real = real * 10 - (t_ui)real;
-		i++;
 	}
-	str_float = (char *)vec_float.data;
-	if (p->f & F_PRECI)
-	{
-		i = ft_strchri(str_float, '.') + 1;
-		if (str_float[i] > '4')
-		{
-			i -= 2;
-			while (str_float[i] == '9')
-			{
-				str_float[i] = '0';
-				i--;
-			}
-			str_float[i]++;
-		}
-		p->precision = 0;
-		str_float[ft_strchri(str_float, '.') + ((p->f & F_SHARP) != 0)] = '\0';
-		p->f &= ~F_PRECI;
-	}
-	else
-	{
-		i = ft_strchri(str_float, '.') + p->precision + 1;
-		if (str_float[i] == '5' && p->precision == STD_PRECI)
-		{
-			i--;
-			if (((str_float[i] - '0') & 1) && str_float[i] < '9')
-				str_float[i]++;
-		}
-		else if (str_float[i] > '4')
-		{
-			i--;
-			while (str_float[i] == '9')
-			{
-				str_float[i] = '0';
-				i--;
-			}
-			if (str_float[i] == '.')
-				i--;
-			while (str_float[i] == '9')
-			{
-				str_float[i] = '0';
-				i--;
-			}
-			str_float[i]++;
-		}
-		str_float[ft_strchri(str_float, '.') + p->precision + 1] = '\0';
-	}
-	p->len = ft_strlen(str_float);
+	round_precision(p, str_f = (char *)vec_float.data, &vec_float);
 	pref = (!pref && p->f & F_PLUS) ? "+" : pref;
 	pref = (!pref && p->f & F_SPACE) ? " " : pref;
-	print_nbr(p, str_float, pref);
+	buffer_add_nbr(p, str_f, pref);
 	vector_destroy(&vec_float);
 }

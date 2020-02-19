@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   aux.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/27 16:10:19 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/19 11:04:57 by fpythago         ###   ########.fr       */
+/*   Created: 2020/02/17 16:41:49 by fpythago          #+#    #+#             */
+/*   Updated: 2020/02/17 17:08:00 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-size_t		ft_strlen(const char *s)
+void		handle_specifier(t_printf *p)
 {
-	size_t i;
-
-	i = 0;
-	if (s)
-	{
-		while (s[i])
-			i++;
-	}
-	return (i);
+	p->f = 0;
+	p->m = 0;
+	p->width = 0;
+	p->precision = 0;
+	parse_flags(p);
+	parse_point(p);
+	parse_modifiers(p);
+	parse_flags(p);
+	parse_specifier(p);
 }

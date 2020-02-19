@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_random.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/27 16:10:19 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/19 11:04:57 by fpythago         ###   ########.fr       */
+/*   Created: 2019/09/28 16:01:37 by lcarmelo          #+#    #+#             */
+/*   Updated: 2019/09/28 16:01:44 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t		ft_strlen(const char *s)
-{
-	size_t i;
+static	t_ull	g_next = 1;
 
-	i = 0;
-	if (s)
-	{
-		while (s[i])
-			i++;
-	}
-	return (i);
+t_ui			ft_random(t_ui rand_max)
+{
+	g_next = g_next * 1103515245 + 12345;
+	return (t_ui)(g_next / 65536) % (rand_max + 1);
 }

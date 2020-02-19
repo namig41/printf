@@ -6,15 +6,16 @@
 #    By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 15:54:57 by lcarmelo          #+#    #+#              #
-#    Updated: 2020/02/17 18:36:32 by fpythago         ###   ########.fr        #
+#    Updated: 2020/02/19 11:22:40 by fpythago         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 FUN_CONVERSION = \
         ft_atoi \
+		ft_itoa \
 		ft_lltoa \
 		ft_uitoa_base \
-		ft_ulltoa_base \
+		ft_ulltoa_base
 
 FUN_MEMORY = \
         ft_memset \
@@ -26,17 +27,13 @@ FUN_MEMORY = \
         ft_memalloc \
         ft_memdel \
 		ft_memswap \
-		ft_swap \
-		ft_max \
-		ft_min
+		ft_swap
 
 FUN_STRINGS = \
-        ft_isprint \
-        ft_isdigit \
-        ft_putchar \
+		ft_putchar \
         ft_putstr \
         ft_strlen \
-        ft_strchr \
+		ft_strchr \
 		ft_strjoin \
 		ft_strcpy \
 		ft_strdup \
@@ -67,19 +64,33 @@ FUN_VECTOR = \
 		vector_reallocate \
 		vector_offset 
 
+FUN_MATH = \
+		ft_max \
+		ft_min \
+		ft_random
+
+FUN_CTYPE = \
+		ft_isprint \
+        ft_isdigit \
+		ft_isalnum
+
 DIR_CONVERSION  = ./conversion/
 DIR_MEMORY      = ./memory/
 DIR_STRINGS     = ./strings/
 DIR_VECTOR 		= ./vector/
+DIR_MATH 		= ./math/
+DIR_CTYPE 		=./ctype/
 DIR_INC   		= ./includes
 
 SRC_CONVERSION  = $(addprefix $(DIR_CONVERSION), $(addsuffix .c, $(FUN_CONVERSION)))
 SRC_MEMORY      = $(addprefix $(DIR_MEMORY), $(addsuffix .c, $(FUN_MEMORY)))
 SRC_STRINGS     = $(addprefix $(DIR_STRINGS), $(addsuffix .c, $(FUN_STRINGS)))
 SRC_VECTOR 		= $(addprefix $(DIR_VECTOR), $(addsuffix .c, $(FUN_VECTOR)))
+SRC_MATH 		= $(addprefix $(DIR_MATH), $(addsuffix .c, $(FUN_MATH)))
+SRC_CTYPE 		= $(addprefix $(DIR_CTYPE), $(addsuffix .c, $(FUN_CTYPE)))
 
-SRC_ALL         = $(SRC_CONVERSION) $(SRC_MEMORY) $(SRC_STRINGS) $(SRC_VECTOR)
-OBJ_ALL         = $(addsuffix .o, $(FUN_CONVERSION) $(FUN_MEMORY) $(FUN_STRINGS) $(FUN_VECTOR))
+SRC_ALL         = $(SRC_CONVERSION) $(SRC_MEMORY) $(SRC_STRINGS) $(SRC_VECTOR) $(SRC_MATH) $(SRC_CTYPE)
+OBJ_ALL         = $(addsuffix .o, $(FUN_CONVERSION) $(FUN_MEMORY) $(FUN_STRINGS) $(FUN_VECTOR) $(FUN_MATH) $(FUN_CTYPE))
 
 CC              = gcc
 NAME            = libft.a

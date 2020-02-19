@@ -6,7 +6,7 @@
 /*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 18:41:12 by fpythago          #+#    #+#             */
-/*   Updated: 2020/02/17 18:58:59 by fpythago         ###   ########.fr       */
+/*   Updated: 2020/02/19 13:44:32 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,12 @@ void						*ft_memalloc(size_t size);
 void						ft_memdel(void **ap);
 void						ft_memswap(void *a, void *b, size_t size);
 void						ft_swap(void **a, void **b);
-size_t						ft_max(size_t a, size_t b);
-long						ft_max_l(long a, long b);
-size_t						ft_min(size_t a, size_t b);
-long						ft_min_l(long a, long b);
 
 size_t						ft_strlen(const char *s);
 size_t						ft_putstr(char const *s, size_t width);
 int							ft_putchar(char c);
 char						*ft_strchr(const char *str, int ch);
 int							ft_strchri(const char *str, int ch);
-int							ft_isdigit(int c);
-int							ft_isprint(int c);
 char						*ft_strcat(char *dest, const char *src);
 char						*ft_strjoin(const char *str1, const char *str2);
 char						*ft_strcpy(char *dst, const char *src);
@@ -60,4 +54,15 @@ char						*ft_itoa(int n);
 char						*ft_lltoa(t_ll n);
 char						*ft_uitoa_base(t_ui value, int base, char reg);
 char						*ft_ulltoa_base(t_ull value, int base, char reg);
+
+int							ft_isdigit(int c);
+int							ft_isprint(int c);
+int							ft_isalnum(int c);
+
+size_t						ft_max(size_t a, size_t b);
+long						ft_max_l(long a, long b);
+size_t						ft_min(size_t a, size_t b);
+long						ft_min_l(long a, long b);
+t_ui						ft_random(t_ui rand_max);
+
 #endif

@@ -1,26 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lcarmelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/27 16:10:19 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/19 11:04:57 by fpythago         ###   ########.fr       */
+/*   Created: 2019/09/27 15:57:29 by lcarmelo          #+#    #+#             */
+/*   Updated: 2019/09/27 15:57:32 by lcarmelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-size_t		ft_strlen(const char *s)
+int	ft_isalnum(int c)
 {
-	size_t i;
-
-	i = 0;
-	if (s)
-	{
-		while (s[i])
-			i++;
-	}
-	return (i);
+	return (c >= '0' && c <= '9')
+	|| ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
 }

@@ -6,17 +6,17 @@
 #    By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 15:54:57 by lcarmelo          #+#    #+#              #
-#    Updated: 2020/02/17 17:00:48 by fpythago         ###   ########.fr        #
+#    Updated: 2020/02/19 17:45:44 by fpythago         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 FUN_NAME = \
-	ft_printf \
-	handle_numbers \
-	parse \
-	buffer \
-	print \
-	aux
+		ft_printf \
+		handle_numbers \
+		parse \
+		buffer \
+		round_numbers \
+		handle_specifier
 
 DIR_SRC		= ./src/
 DIR_INC		= ./includes/
@@ -28,7 +28,6 @@ OBJ_PRINTF 	= $(addsuffix .o, $(FUN_NAME))
 CC 	   		= gcc
 NAME 		= libftprintf.a
 CFLAGS 	   	= -Wall -Werror -Wextra -O2 -I$(DIR_INC) -I$(DIR_LIB)$(DIR_INC)
-CFLAGS 		=  -O2 -I$(DIR_INC) -I$(DIR_LIB)$(DIR_INC)
 
 all: $(NAME)
 
@@ -49,7 +48,4 @@ fclean: clean
 
 re: fclean all
 
-compile: re clean
-	@$(CC) $(CFLAGS) src/main.c $(NAME)	
-
-.PHONY: all clean fclean re compile
+.PHONY: all clean fclean re

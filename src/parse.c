@@ -6,7 +6,7 @@
 /*   By: fpythago <fpythago@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 13:49:23 by lcarmelo          #+#    #+#             */
-/*   Updated: 2020/02/17 16:41:22 by fpythago         ###   ########.fr       */
+/*   Updated: 2020/02/19 17:34:11 by fpythago         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void			parse_modifiers(t_printf *p)
 	}
 }
 
-inline void		parse_point(t_printf *p)
+void		parse_point(t_printf *p)
 {
 	if (ft_isdigit(*p->format))
 	{
@@ -37,8 +37,9 @@ inline void		parse_point(t_printf *p)
 	while (*p->format == '.')
 	{
 		++p->format;
-		p->precision = ft_atoi(p->format);
-		while (ft_isdigit(*p->format))
+		p->precision = (*p->format == '*') ? va_arg(p->arg, int) :
+											ft_atoi(p->format);
+		while (ft_isdigit(*p->format) || (*p->format == '*'))
 			++p->format;
 		p->f |= (!p->precision) ? F_PRECI : 0;
 		p->f &= (~F_ZERO);
@@ -55,11 +56,12 @@ void			parse_flags(t_printf *p)
 	p->f |= (p->f & F_ZERO) ? F_FZERO : 0;
 	p->f &= (p->f & F_PLUS) ? (~F_SPACE) : 0xFFFF;
 	p->f &= (p->f & F_PRECI) ? (~F_ZERO) : 0xFFFF;
-	if (p->f & F_WILDCARD && (p->width = va_arg(p->arg, int) < 0))
+	if (p->f & F_WILDCARD && ((p->width = va_arg(p->arg, int)) < 0))
 	{
 		p->f |= F_MINUS;
 		p->width = -p->width;
 	}
+	p->f &= ~F_WILDCARD;
 }
 
 void			parse_specifier(t_printf *p)
@@ -76,11 +78,11 @@ void			parse_specifier(t_printf *p)
 	else if (ft_strchr(S_OCT, p->c))
 		handle_oct(p);
 	else if (ft_strchr(S_CHAR, p->c))
-		print_char(p);
+		buffer_add_char(p);
 	else if (ft_strchr(S_STR, p->c))
-		print_str(p);
+		buffer_add_str(p);
 	else if (p->c)
-		buffer_set(p, p->c, 1, SAVE);
+		vector_push_back(&p->buffer, &p->c);
 	else
 		p->format--;
 }
