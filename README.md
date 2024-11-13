@@ -60,6 +60,4 @@ $ make
 
 Для полного тестирования проекта можно воспользоваться сторонним тестером:
 
-```
-[Tripouille/printfTester](https://github.com/Tripouille/printfTester)
-```
+* [Tripouille/printfTester](https://github.com/Tripouille/printfTester)
